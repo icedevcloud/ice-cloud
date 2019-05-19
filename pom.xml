@@ -18,6 +18,11 @@
     <name>bing-cloud</name>
     <description>Spring Cloud Lab</description>
 
+    <modules>
+        <module>bing-auth</module>
+        <module>bing-resources</module>
+    </modules>
+
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.SR3</spring-cloud.version>
@@ -25,6 +30,7 @@
 
         <druid-spring-boot.version>1.1.10</druid-spring-boot.version>
         <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
+        <hutool-all.version>4.5.10</hutool-all.version>
         <lombok.version>1.18.8</lombok.version>
     </properties>
 
@@ -49,6 +55,12 @@
                 <groupId>org.springframework.security.oauth</groupId>
                 <artifactId>spring-security-oauth2</artifactId>
                 <version>${spring-security-oauth2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
 
             <dependency>
