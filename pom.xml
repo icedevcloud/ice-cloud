@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <name>bing-cloud</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Spring Cloud Lab</description>
 
     <properties>
         <java.version>1.8</java.version>
