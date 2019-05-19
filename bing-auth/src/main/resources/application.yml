@@ -1,0 +1,15 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: auth
+  redis:
+    host: 111.230.70.100
+    port: 6379
+    password: redis2019$
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://gz-cdb-qlqtn6j8.sql.tencentcdb.com:63816/bing-auth?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: BingCloud666$

@@ -1,0 +1,10 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: resources
+  redis:
+    host: 111.230.70.100
+    port: 6379
+    password: redis2019$
