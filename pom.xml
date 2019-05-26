@@ -21,6 +21,7 @@
     <modules>
         <module>bing-auth</module>
         <module>bing-resources</module>
+        <module>bing-test</module>
     </modules>
 
     <properties>
