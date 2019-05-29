@@ -27,11 +27,12 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.SR3</spring-cloud.version>
+        <spring-cloud-alibaba.version>0.2.2.RELEASE</spring-cloud-alibaba.version>
         <platform-bom.version>Cairo-SR7</platform-bom.version>
 
-        <druid-spring-boot.version>1.1.10</druid-spring-boot.version>
         <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
         <hutool-all.version>4.5.10</hutool-all.version>
+        <hikari-cp.version>3.3.1</hikari-cp.version>
         <lombok.version>1.18.8</lombok.version>
     </properties>
 
@@ -45,12 +46,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid-spring-boot.version}</version>
-            </dependency>
-
             <!-- spring-security-oauth2 指定版本解决Redis问题 更改依赖使用版本 -->
             <dependency>
                 <groupId>org.springframework.security.oauth</groupId>
@@ -65,6 +60,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikari-cp.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
@@ -74,6 +75,14 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

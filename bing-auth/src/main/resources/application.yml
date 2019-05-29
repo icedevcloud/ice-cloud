@@ -9,7 +9,12 @@ spring:
     port: 6379
     password: redis2019$
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://gz-cdb-qlqtn6j8.sql.tencentcdb.com:63816/bing-auth?useUnicode=true&characterEncoding=utf8
     username: root
     password: BingCloud666$
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
