@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: bing-monitor
+    name: bing-sba
   profiles:
     active: dev
   cloud:
@@ -13,3 +13,10 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yaml
+
+#开启端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
