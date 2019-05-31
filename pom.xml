@@ -22,6 +22,7 @@
         <module>bing-auth</module>
         <module>bing-resources</module>
         <module>bing-test</module>
+        <module>bing-view</module>
     </modules>
 
     <properties>
