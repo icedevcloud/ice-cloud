@@ -26,4 +26,9 @@ public class TestController {
         return "Hello Sentinel";
     }
 
+    @GetMapping(value = "/hello2")
+    public String hello2() {
+        return "Hello Sentinel";
+    }
+
 }
