@@ -20,7 +20,9 @@
 
     <modules>
         <module>bing-common</module>
+        <module>bing-gateway</module>
         <module>bing-auth</module>
+        <module>bing-upms</module>
         <module>bing-resources</module>
         <module>bing-test</module>
         <module>bing-view</module>
