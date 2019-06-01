@@ -19,10 +19,12 @@
     <description>Spring Cloud Lab</description>
 
     <modules>
+        <module>bing-common</module>
         <module>bing-auth</module>
         <module>bing-resources</module>
         <module>bing-test</module>
         <module>bing-view</module>
+        <module>bing-mybatis</module>
     </modules>
 
     <properties>
@@ -32,8 +34,9 @@
         <platform-bom.version>Cairo-SR7</platform-bom.version>
 
         <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
-        <hutool-all.version>4.5.10</hutool-all.version>
+        <mybatis-plus.version>3.1.1</mybatis-plus.version>
         <hikari-cp.version>3.3.1</hikari-cp.version>
+        <hutool-all.version>4.5.10</hutool-all.version>
         <spring-boot-admin.version>2.0.5</spring-boot-admin.version>
         <lombok.version>1.18.8</lombok.version>
     </properties>
@@ -76,15 +79,21 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool-all.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${hikari-cp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
             </dependency>
 
             <dependency>
