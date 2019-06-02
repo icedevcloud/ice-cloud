@@ -1,7 +1,7 @@
 package com.xiaobingby.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xiaobingby.upms.dto.UserDetailsDto;
+import com.xiaobingby.upms.dto.SysUserDetailsDto;
 import com.xiaobingby.upms.dto.UserDto;
 import com.xiaobingby.upms.entity.SysUser;
 
@@ -15,7 +15,7 @@ import com.xiaobingby.upms.entity.SysUser;
  */
 public interface ISysUserService extends IService<SysUser> {
 
-    UserDetailsDto loadUserByUsername(String username);
+    SysUserDetailsDto loadUserByUsername(String username);
 
     boolean addUser(UserDto userDto);
 

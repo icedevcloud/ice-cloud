@@ -3,7 +3,7 @@ package com.xiaobingby.upms.controller;
 
 import com.xiaobingby.common.core.api.R;
 import com.xiaobingby.common.core.page.PageParams;
-import com.xiaobingby.upms.dto.UserDetailsDto;
+import com.xiaobingby.upms.dto.SysUserDetailsDto;
 import com.xiaobingby.upms.dto.UserDto;
 import com.xiaobingby.upms.entity.SysUser;
 import com.xiaobingby.upms.service.ISysUserService;
@@ -55,9 +55,9 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
 
     @ApiOperation(value = "用户名查询用户信息接口", notes = "auth 服务授权使用接口", produces = "application/json")
     @GetMapping("/loadUserByUsername/{username}")
-    public R<UserDetailsDto> loadUserByUsername(@PathVariable(name = "username") String username) {
-        UserDetailsDto userDetailsDto = iSysUserService.loadUserByUsername(username);
-        return R.ok(userDetailsDto);
+    public R<SysUserDetailsDto> loadUserByUsername(@PathVariable(name = "username") String username) {
+        SysUserDetailsDto sysUserDetailsDto = iSysUserService.loadUserByUsername(username);
+        return R.ok(sysUserDetailsDto);
     }
 
 }

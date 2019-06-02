@@ -1,10 +1,9 @@
 package com.xiaobingby.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xiaobingby.upms.dto.UserDetailsDto;
+import com.xiaobingby.upms.dto.SysUserDetailsDto;
 import com.xiaobingby.upms.dto.UserDto;
 import com.xiaobingby.upms.entity.*;
 import com.xiaobingby.upms.mapper.SysUserMapper;
@@ -48,25 +47,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private ISysRolePermissionService iSysRolePermissionService;
 
     @Override
-    public UserDetailsDto loadUserByUsername(String username) {
-        UserDetailsDto userDetailsDto = null;
+    public SysUserDetailsDto loadUserByUsername(String username) {
+        SysUserDetailsDto sysUserDetailsDto = null;
 
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         SysUser sysUser = this.getOne(queryWrapper);
 
         if (sysUser != null) {
-            userDetailsDto = new UserDetailsDto();
-            BeanUtils.copyProperties(sysUser, userDetailsDto);
+            sysUserDetailsDto = new SysUserDetailsDto();
+            BeanUtils.copyProperties(sysUser, sysUserDetailsDto);
 
             List<SysRole> sysRoles = findUserRole(sysUser.getId());
 
             List<SysPermission> sysPermissions = findRolePermission(sysRoles);
 
-            userDetailsDto.setRoles(sysRoles);
-            userDetailsDto.setPermissions(sysPermissions);
+            sysUserDetailsDto.setRoles(sysRoles);
+            sysUserDetailsDto.setPermissions(sysPermissions);
         }
-        return userDetailsDto;
+        return sysUserDetailsDto;
     }
 
     @Transactional

@@ -13,7 +13,7 @@ import java.util.List;
  * @since 1.0
  */
 @Data
-public class UserDetailsDto extends SysUser {
+public class SysUserDetailsDto extends SysUser {
 
     private List<SysRole> roles;
 
