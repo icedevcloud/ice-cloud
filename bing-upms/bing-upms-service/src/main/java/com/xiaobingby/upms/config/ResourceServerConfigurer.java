@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,15 +17,11 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.error.DefaultOAuth2ExceptionRenderer;
-import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
-import org.springframework.security.oauth2.provider.error.OAuth2ExceptionRenderer;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
+import org.springframework.security.oauth2.provider.error.*;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,8 +46,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new CAuthenticationEntryPoint())
-                .accessDeniedHandler(new CAccessDeniedHandler())
+                .authenticationEntryPoint(new AuthenticationEntryPoint())
+                .accessDeniedHandler(new AccessDeniedHandler())
                 .and().csrf().disable();
     }
 
@@ -72,56 +70,55 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
         return tokenStore;
     }
 
-    public class CAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    public class AuthenticationEntryPoint extends OAuth2AuthenticationEntryPoint {
 
         private WebResponseExceptionTranslator<OAuth2Exception> exceptionTranslator = new DefaultWebResponseExceptionTranslator();
 
+        private OAuth2ExceptionRenderer exceptionRenderer = new DefaultOAuth2ExceptionRenderer();
+
         @Override
-        public void commence(HttpServletRequest httpServletRequest, HttpServletResponse response, AuthenticationException authenticationException) throws IOException, ServletException {
+        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
             try {
-                ResponseEntity<OAuth2Exception> translate = exceptionTranslator.translate(authenticationException);
-                OAuth2Exception body = translate.getBody();
-                response.setHeader("Cache-Control", "no-store");
-                response.setHeader("Pragma", "no-cache");
-                response.setContentType("application/json;charset=UTF-8");
-                response.setStatus(translate.getStatusCodeValue());
+                ResponseEntity<OAuth2Exception> translate = exceptionTranslator.translate(authException);
                 R<Object> objectR = new R<>();
                 objectR.setCode(translate.getStatusCodeValue());
-                objectR.setData(body);
-                objectR.setMsg(body.getMessage());
-                //R.error(translate.getStatusCodeValue(), body, body.getMessage();
-                response.getWriter().write(objectMapper.writeValueAsString(objectR));
-                response.getWriter().close();
+                objectR.setData(translate.getBody());
+                objectR.setMsg(translate.getBody().getMessage());
+                ResponseEntity<?> responseEntity = enhanceResponse(translate, authException);
+                HttpHeaders headers = responseEntity.getHeaders();
+                HttpStatus statusCode = responseEntity.getStatusCode();
+                ResponseEntity<R<Object>> rResponseEntity = new ResponseEntity<R<Object>>(objectR, headers, statusCode);
+                exceptionRenderer.handleHttpEntityResponse(rResponseEntity, new ServletWebRequest(request, response));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public class CAccessDeniedHandler implements AccessDeniedHandler {
+    public class AccessDeniedHandler extends OAuth2AccessDeniedHandler {
 
         private WebResponseExceptionTranslator<OAuth2Exception> exceptionTranslator = new DefaultWebResponseExceptionTranslator();
 
+        private OAuth2ExceptionRenderer exceptionRenderer = new DefaultOAuth2ExceptionRenderer();
+
         @Override
-        public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException authException) throws IOException, ServletException {
             try {
-                ResponseEntity<OAuth2Exception> translate = exceptionTranslator.translate(accessDeniedException);
-                OAuth2Exception body = translate.getBody();
-                response.setHeader("Cache-Control", "no-store");
-                response.setHeader("Pragma", "no-cache");
-                response.setContentType("application/json;charset=UTF-8");
-                response.setStatus(translate.getStatusCodeValue());
+                ResponseEntity<OAuth2Exception> translate = exceptionTranslator.translate(authException);
                 R<Object> objectR = new R<>();
                 objectR.setCode(translate.getStatusCodeValue());
-                objectR.setData(body);
-                objectR.setMsg(body.getMessage());
-                //R.error(translate.getStatusCodeValue(), body, body.getMessage();
-                response.getWriter().write(objectMapper.writeValueAsString(objectR));
-                response.getWriter().close();
+                objectR.setData(translate.getBody());
+                objectR.setMsg(translate.getBody().getMessage());
+                ResponseEntity<?> responseEntity = enhanceResponse(translate, authException);
+                HttpHeaders headers = responseEntity.getHeaders();
+                HttpStatus statusCode = responseEntity.getStatusCode();
+                ResponseEntity<R<Object>> rResponseEntity = new ResponseEntity<R<Object>>(objectR, headers, statusCode);
+                exceptionRenderer.handleHttpEntityResponse(rResponseEntity, new ServletWebRequest(request, response));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
 
 }
