@@ -9,6 +9,7 @@
     <result column="update_time" property="updateTime" />
         <result column="name" property="name" />
         <result column="sort" property="sort" />
+        <result column="role_code" property="roleCode" />
         <result column="status" property="status" />
         <result column="default_role" property="defaultRole" />
         <result column="description" property="description" />
@@ -19,7 +20,7 @@
         id,
         create_time,
         update_time,
-        name, sort, status, default_role, description
+        name, sort, role_code, status, default_role, description
     </sql>
 
 </mapper>

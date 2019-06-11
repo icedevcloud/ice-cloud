@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author XiaoBingBy
- * @since 2019-06-02
+ * @since 2019-06-11
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,6 +29,9 @@ public class SysRole extends BaseEntity {
     @ApiModelProperty(value = "排序号")
     private Integer sort;
 
+    @ApiModelProperty(value = "角色编码")
+    private String roleCode;
+
     @ApiModelProperty(value = "状态")
     private Integer status;
 
@@ -37,5 +40,6 @@ public class SysRole extends BaseEntity {
 
     @ApiModelProperty(value = "描述")
     private String description;
+
 
 }
