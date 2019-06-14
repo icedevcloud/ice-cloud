@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(value = "部门管理接口类", tags = "部门管理", description = "部门管理")
 @RestController
-@RequestMapping("/upms/dept")
+@RequestMapping("/dept")
 public class SysDeptController {
 
 }

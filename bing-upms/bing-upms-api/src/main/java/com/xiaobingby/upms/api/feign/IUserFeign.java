@@ -20,7 +20,7 @@ public interface IUserFeign {
      * @param username
      * @return
      */
-    @GetMapping("/upms/user/loadUserByUsername/{username}")
+    @GetMapping("/user/loadUserByUsername/{username}")
     R<SysUserDetailsDto> loadUserByUsername(@PathVariable("username") String username);
 
 }

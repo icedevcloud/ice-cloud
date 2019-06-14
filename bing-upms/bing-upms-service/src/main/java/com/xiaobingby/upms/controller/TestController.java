@@ -13,7 +13,6 @@ public class TestController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @PreAuthorize("hasAuthority('/test/hello')")
     @GetMapping("/logger")
     public String logger() {
         logger.debug("debug");

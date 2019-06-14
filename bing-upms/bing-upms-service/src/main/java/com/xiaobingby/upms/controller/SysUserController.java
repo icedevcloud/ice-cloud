@@ -3,6 +3,8 @@ package com.xiaobingby.upms.controller;
 
 import com.xiaobingby.common.core.api.R;
 import com.xiaobingby.common.core.page.PageParams;
+import com.xiaobingby.common.security.dto.UserDetailsDto;
+import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.dto.SysUserDetailsDto;
 import com.xiaobingby.upms.dto.UserDto;
 import com.xiaobingby.upms.entity.SysUser;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "用户管理接口类", tags = "用户管理", description = "用户管理")
 @RestController
-@RequestMapping("/upms/user")
+@RequestMapping("/user")
 public class SysUserController extends BaseController<ISysUserService, SysUser, Long> {
 
     @Autowired
@@ -31,7 +33,7 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
     @ApiOperation(value = "用户查询分页接口", notes = "用户查询分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public R pageList(PageParams pageParams) {
+    public R pageList(@RequestBody PageParams pageParams) {
         return super.pageList(pageParams);
     }
 
@@ -58,6 +60,23 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
     public R<SysUserDetailsDto> loadUserByUsername(@PathVariable(name = "username") String username) {
         SysUserDetailsDto sysUserDetailsDto = iSysUserService.loadUserByUsername(username);
         return R.ok(sysUserDetailsDto);
+    }
+
+    @ApiOperation(value = "获取当前登录用户信息接口", notes = "获取当前登录用户信息接口", produces = "application/json")
+    @GetMapping("/getUserInfo")
+    public R<SysUser> getUserInfo() {
+        UserDetailsDto userDetails = SecurityUtils.getUserDetails();
+        SysUser sysUser = iSysUserService.getById(userDetails.getId());
+        sysUser.setPassword(null);
+        sysUser.setAvatar("https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png");
+        return R.ok(sysUser);
+    }
+
+    @ApiOperation(value = "用过用户ID查询用户角色信息接口", notes = "用过用户ID查询用户角色信息接口", produces = "application/json")
+    @GetMapping("/userRolesInfo/{id}")
+    public R<UserDto> userRolesInfo(@PathVariable Long id) {
+        UserDto userRolesInfo = iSysUserService.findUserRolesInfo(id);
+        return R.ok(userRolesInfo);
     }
 
 }

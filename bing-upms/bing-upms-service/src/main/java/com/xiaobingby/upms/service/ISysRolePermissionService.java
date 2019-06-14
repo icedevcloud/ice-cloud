@@ -1,5 +1,6 @@
 package com.xiaobingby.upms.service;
 
+import com.xiaobingby.upms.dto.RolePermissionDto;
 import com.xiaobingby.upms.entity.SysRolePermission;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-06-02
  */
 public interface ISysRolePermissionService extends IService<SysRolePermission> {
+
+    boolean updateRolePermission(RolePermissionDto rolePermissionDto);
 
 }

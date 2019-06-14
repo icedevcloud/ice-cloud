@@ -17,6 +17,6 @@ public class UserDto extends SysUser {
 
 //    private Collection<Role> roles;
 
-    private Collection<Long> roleIds;
+    private Collection<String> roleIds;
 
 }

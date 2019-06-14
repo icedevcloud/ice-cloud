@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 @Api(value = "字典管理接口类", tags = "字典管理", description = "字典管理")
 @RestController
-@RequestMapping("/upms/dict")
+@RequestMapping("/dict")
 public class SysDictController extends BaseController<ISysDictService, SysDict, Long> {
 
     @Autowired

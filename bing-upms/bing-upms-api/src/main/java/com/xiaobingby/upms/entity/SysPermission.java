@@ -1,6 +1,9 @@
 package com.xiaobingby.upms.entity;
 
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.xiaobingby.common.mybatis.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,6 +28,7 @@ public class SysPermission extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "父ID")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long pid;
 
     @ApiModelProperty(value = "权限名称")

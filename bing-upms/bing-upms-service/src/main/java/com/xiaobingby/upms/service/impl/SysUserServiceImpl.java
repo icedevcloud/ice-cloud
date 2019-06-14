@@ -50,9 +50,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public SysUserDetailsDto loadUserByUsername(String username) {
         SysUserDetailsDto sysUserDetailsDto = null;
 
-        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        SysUser sysUser = this.getOne(queryWrapper);
+        SysUser sysUser = this.getOne(Wrappers.<SysUser>lambdaQuery()
+                .eq(SysUser::getUsername, username)
+        );
 
         if (sysUser != null) {
             sysUserDetailsDto = new SysUserDetailsDto();
@@ -75,11 +75,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         BeanUtils.copyProperties(userDto, sysUser);
         boolean save1 = this.save(sysUser);
 
-        Collection<Long> roleIds = userDto.getRoleIds();
+        Collection<String> roleIds = userDto.getRoleIds();
         List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
             SysUserRole userRole = new SysUserRole();
             userRole.setUserId(userDto.getId());
-            userRole.setRoleId(roleId);
+            userRole.setRoleId(Long.valueOf(roleId));
             return userRole;
         }).collect(Collectors.toList());
         boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
@@ -100,11 +100,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysUserRole::getUserId, sysUser.getId())
         );
 
-        Collection<Long> roleIds = userDto.getRoleIds();
+        Collection<String> roleIds = userDto.getRoleIds();
         List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
             SysUserRole userRole = new SysUserRole();
             userRole.setUserId(userDto.getId());
-            userRole.setRoleId(roleId);
+            userRole.setRoleId(Long.valueOf(roleId));
             return userRole;
         }).collect(Collectors.toList());
         boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
@@ -122,6 +122,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return remove1;
     }
 
+    @Override
+    public UserDto findUserRolesInfo(Long id) {
+        SysUser sysUser = this.getById(id);
+        // 查询用户关联角色
+        List<SysUserRole> sysUserRoles = iSysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery()
+            .eq(SysUserRole::getUserId, sysUser.getId())
+        );
+        ArrayList<String> roleIds = new ArrayList<>();
+        sysUserRoles.forEach(item -> {
+            roleIds.add(String.valueOf(item.getRoleId()));
+        });
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(sysUser, userDto);
+        userDto.setRoleIds(roleIds);
+        return userDto;
+    }
+
     /**
      * 查询用户角色
      *
@@ -137,7 +154,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         userRoles.parallelStream().forEach(item -> {
             roleIds.add(item.getRoleId());
         });
-        List<SysRole> sysRoles = (List)iSysRoleService.listByIds(roleIds);
+        List<SysRole> sysRoles = (List) iSysRoleService.listByIds(roleIds);
         return sysRoles;
     }
 
@@ -152,18 +169,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         roles.parallelStream().forEach(item -> {
             roleIds.add(item.getId());
         });
-        QueryWrapper<SysRolePermission> rolePermissionQueryWrapper = new QueryWrapper<>();
-        rolePermissionQueryWrapper.in("role_id", roleIds);
-        List<SysRolePermission> sysRolePermissions = iSysRolePermissionService.list(rolePermissionQueryWrapper);
+        List<SysRolePermission> sysRolePermissions = iSysRolePermissionService.list(Wrappers.<SysRolePermission>lambdaQuery()
+                .in(SysRolePermission::getRoleId, roleIds)
+        );
 
         ArrayList<Long> permissionIds = new ArrayList<>();
         sysRolePermissions.parallelStream().forEach(item -> {
             permissionIds.add(item.getPermissionId());
         });
-        QueryWrapper<SysPermission> permissionQueryWrapper = new QueryWrapper<>();
-        permissionQueryWrapper.in("id", permissionIds);
-        permissionQueryWrapper.eq("type", "1");
-        List<SysPermission> sysPermissions = iSysPermissionService.list(permissionQueryWrapper);
+        List<SysPermission> sysPermissions = iSysPermissionService.list(Wrappers.<SysPermission>lambdaQuery()
+                .in(SysPermission::getId, permissionIds)
+                .eq(SysPermission::getType, 2)
+        );
         return sysPermissions;
     }
 

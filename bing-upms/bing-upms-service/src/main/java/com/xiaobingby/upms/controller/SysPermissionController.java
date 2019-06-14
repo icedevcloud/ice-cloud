@@ -5,12 +5,14 @@ import com.xiaobingby.common.core.api.R;
 import com.xiaobingby.common.core.page.PageParams;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.service.ISysPermissionService;
+import com.xiaobingby.upms.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -22,17 +24,17 @@ import java.util.Arrays;
  */
 @Api(value = "权限管理接口类", tags = "权限管理", description = "权限管理")
 @RestController
-@RequestMapping("/upms/permission")
+@RequestMapping("/permission")
 public class SysPermissionController extends BaseController<ISysPermissionService, SysPermission, Long> {
 
     @Autowired
     private ISysPermissionService iSysPermissionService;
 
-    @ApiOperation(value = "权限查询分页接口", notes = "权限查询分页接口", produces = "application/json")
-    @PostMapping("/page")
-    @Override
-    public R pageList(PageParams pageParams) {
-        return super.pageList(pageParams);
+    @ApiOperation(value = "权限树展示接口", notes = "权限树展示接口", produces = "application/json")
+    @GetMapping("/getPermissionTree")
+    public R<List<PermissionTreeVo>> getPermissionTree() {
+        List<PermissionTreeVo> permissionTree = iSysPermissionService.getPermissionTree();
+        return new R<List<PermissionTreeVo>>().ok(permissionTree);
     }
 
     @ApiOperation(value = "添加权限接口", notes = "添加权限接口", produces = "application/json")

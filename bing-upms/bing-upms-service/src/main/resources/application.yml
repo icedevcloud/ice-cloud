@@ -9,6 +9,9 @@ spring:
     url: jdbc:mysql://gz-cdb-qlqtn6j8.sql.tencentcdb.com:63816/bing-auth?useUnicode=true&characterEncoding=utf8
     username: root
     password: BingCloud666$
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*/*Mapper.xml
