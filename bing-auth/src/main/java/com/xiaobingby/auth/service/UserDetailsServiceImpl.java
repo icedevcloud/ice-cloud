@@ -61,7 +61,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         if (!CollectionUtils.isEmpty(sysUserDetailsDto.getRoles())) {
             sysUserDetailsDto.getRoles().parallelStream().forEach(item -> {
-                grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + item.getId()));
+                grantedAuthorities.add(new SimpleGrantedAuthority(item.getRoleCode()));
             });
         }
         if (!CollectionUtils.isEmpty(sysUserDetailsDto.getPermissions())) {
