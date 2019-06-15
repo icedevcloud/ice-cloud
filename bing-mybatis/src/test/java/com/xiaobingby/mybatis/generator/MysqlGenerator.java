@@ -59,6 +59,10 @@ public class MysqlGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/mybatis-plus-generator/src/main/java");
+        gc.setFileOverride(true);
+        gc.setSwagger2(true);
+        gc.setBaseResultMap(true);
+        gc.setBaseColumnList(true);
         gc.setAuthor("XiaoBingBy");
         gc.setOpen(false);
         mpg.setGlobalConfig(gc);
@@ -106,10 +110,11 @@ public class MysqlGenerator {
         strategy.setEntityLombokModel(true);
         // strategy.setSuperControllerClass("com.baomidou.mybatisplus.samples.generator.common.BaseController");
         // strategy.setInclude(scanner("表名"));
-        strategy.setInclude("sys_user");
-       //strategy.setSuperEntityColumns("id", "create_time", "update_time");
+        strategy.setInclude("sys_role");
+       strategy.setSuperEntityColumns("id", "create_time", "update_time");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
+        strategy.setRestControllerStyle(true);
         mpg.setStrategy(strategy);
         // 选择 freemarker 引擎需要指定如下加，注意 pom 依赖必须有！
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
