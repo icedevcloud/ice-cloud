@@ -1,7 +1,7 @@
 package com.xiaobingby.upms.controller;
 
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.xiaobingby.common.core.api.R;
 import com.xiaobingby.common.core.page.PageParams;
 import com.xiaobingby.upms.entity.SysDict;
 import com.xiaobingby.upms.service.ISysDictService;
@@ -31,7 +31,7 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     @ApiOperation(value = "字典查询分页接口", notes = "字典查询分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public com.xiaobingby.common.core.api.R pageList(PageParams pageParams) {
+    public com.xiaobingby.common.core.api.R pageList(@RequestBody PageParams pageParams) {
         return super.pageList(pageParams);
     }
 

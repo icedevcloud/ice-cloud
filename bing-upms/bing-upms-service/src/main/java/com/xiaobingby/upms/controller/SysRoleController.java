@@ -43,7 +43,7 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
     @ApiOperation(value = "角色查询分页接口", notes = "角色查询分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public R pageList(PageParams pageParams) {
+    public R pageList(@RequestBody PageParams pageParams) {
         return super.pageList(pageParams);
     }
 
