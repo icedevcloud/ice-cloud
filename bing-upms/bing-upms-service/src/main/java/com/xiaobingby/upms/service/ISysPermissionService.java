@@ -2,6 +2,7 @@ package com.xiaobingby.upms.service;
 
 import com.xiaobingby.upms.entity.SysPermission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xiaobingby.upms.vo.MenuTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
     boolean delPermission(Long[] ids);
 
     List<PermissionTreeVo> getRolePermissionTree(Long roleId);
+
+    List<MenuTreeVo> getUserMenuTree();
+
 }

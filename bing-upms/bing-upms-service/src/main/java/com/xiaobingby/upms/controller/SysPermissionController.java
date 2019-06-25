@@ -5,6 +5,7 @@ import com.xiaobingby.common.core.api.R;
 import com.xiaobingby.common.core.page.PageParams;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.service.ISysPermissionService;
+import com.xiaobingby.upms.vo.MenuTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +54,13 @@ public class SysPermissionController extends BaseController<ISysPermissionServic
     @DeleteMapping("{ids}")
     public R<Boolean> delPermission(@PathVariable Long[] ids) {
         return R.ok(iSysPermissionService.delPermission(ids));
+    }
+
+    @ApiOperation(value = "前端路由接口", notes = "前端路由接口", produces = "application/json")
+    @GetMapping("getRouter")
+    public R<List<MenuTreeVo>> getRouter() {
+        List<MenuTreeVo> userMenuTree = iSysPermissionService.getUserMenuTree();
+        return R.ok(userMenuTree);
     }
 
 }

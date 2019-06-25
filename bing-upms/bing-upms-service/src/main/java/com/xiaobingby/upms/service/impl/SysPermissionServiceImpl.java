@@ -2,12 +2,16 @@ package com.xiaobingby.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.xiaobingby.common.security.dto.UserDetailsDto;
+import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.entity.SysRolePermission;
 import com.xiaobingby.upms.mapper.SysPermissionMapper;
 import com.xiaobingby.upms.service.ISysPermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
+import com.xiaobingby.upms.vo.MenuMeta;
+import com.xiaobingby.upms.vo.MenuTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Autowired
     private ISysRolePermissionService iSysRolePermissionService;
+
+    @Autowired
+    private SysPermissionMapper sysPermissionMapper;
 
     /**
      * 构造后台菜单Tree
@@ -97,6 +104,31 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return permissionTree;
     }
 
+    @Override
+    public List<MenuTreeVo> getUserMenuTree() {
+        UserDetailsDto userDetails = SecurityUtils.getUserDetails();
+        List<SysPermission> userMenus = sysPermissionMapper.findUserMenus(userDetails.getId());
+        ArrayList<MenuTreeVo> menuTreeVos = new ArrayList<>();
+        // 构造一级菜单
+        userMenus.forEach(item -> {
+            if (item.getPid() == 0) {
+                GenOneMenuTreeVo(menuTreeVos, item);
+            }
+        });
+
+        // 构造二级菜单
+        menuTreeVos.forEach(i -> {
+            ArrayList<MenuTreeVo> subMenuTreeVos = new ArrayList<>();
+            userMenus.forEach(j -> {
+                if (i.getId() == j.getPid()) {
+                    GenOneMenuTreeVo(subMenuTreeVos, j);
+                }
+            });
+            i.setChildren(subMenuTreeVos);
+        });
+        return menuTreeVos;
+    }
+
     /**
      * 修改是否选中节点属性
      *
@@ -127,6 +159,28 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 this.modifyPermissionTreeVo(item.getChildren());
             }
         });
+    }
+
+    /**
+     * Permission To ArrayList<MenuTreeVo> meGenOneMenuTreeVonuTreeVos
+     *
+     * @param menuTreeVos
+     * @param item
+     */
+    private void GenOneMenuTreeVo(ArrayList<MenuTreeVo> menuTreeVos, SysPermission item) {
+        MenuTreeVo menuTreeVo = new MenuTreeVo();
+        menuTreeVo.setId(item.getId());
+        menuTreeVo.setPath(item.getPath());
+        menuTreeVo.setName(item.getName());
+        menuTreeVo.setComponent(item.getComponent());
+        MenuMeta menuMeta = new MenuMeta();
+        menuMeta.setTitle(item.getTitle());
+        menuMeta.setIcon(item.getIcon());
+        menuMeta.setHideInBread(item.getHideInBread());
+        menuMeta.setHideInMenu(item.getHideInMenu());
+        menuMeta.setNotCache(item.getNotCache());
+        menuTreeVo.setMeta(menuMeta);
+        menuTreeVos.add(menuTreeVo);
     }
 
 }
