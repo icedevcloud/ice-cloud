@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(
-                        "/actuator/**").permitAll()
+                        "/actuator/**", "/image-code/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
     }
