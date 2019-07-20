@@ -1,5 +1,7 @@
 package com.xiaobingby.upms.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,8 +10,11 @@ import com.xiaobingby.upms.dto.UserDto;
 import com.xiaobingby.upms.entity.*;
 import com.xiaobingby.upms.mapper.SysUserMapper;
 import com.xiaobingby.upms.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +34,7 @@ import java.util.stream.Collectors;
  * @author XiaoBingBy
  * @since 2019-06-02
  */
+@Slf4j
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
@@ -45,6 +51,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private ISysRolePermissionService iSysRolePermissionService;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Override
     public SysUserDetailsDto loadUserByUsername(String username) {
@@ -73,6 +82,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean addUser(UserDto userDto) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
+
+        String password = RandomUtil.randomString(8);
+        String encode = passwordEncoder.encode(password);
+        sendPasswordMail(userDto.getUsername(), password, userDto.getEmail());
+        sysUser.setPassword(encode);
+
         boolean save1 = this.save(sysUser);
 
         Collection<String> roleIds = userDto.getRoleIds();
@@ -92,7 +107,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
         if (!StringUtils.isEmpty(sysUser.getPassword())) {
-            sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+            //sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         }
         boolean save = this.updateById(sysUser);
 
@@ -127,7 +142,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser sysUser = this.getById(id);
         // 查询用户关联角色
         List<SysUserRole> sysUserRoles = iSysUserRoleService.list(Wrappers.<SysUserRole>lambdaQuery()
-            .eq(SysUserRole::getUserId, sysUser.getId())
+                .eq(SysUserRole::getUserId, sysUser.getId())
         );
         ArrayList<String> roleIds = new ArrayList<>();
         sysUserRoles.forEach(item -> {
@@ -182,6 +197,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysPermission::getType, 2)
         );
         return sysPermissions;
+    }
+
+    private void sendPasswordMail(String userName, String password, String email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("fanshuye1304@163.com");//发送者.
+        message.setTo(email);//接收者.
+        message.setSubject("账号密码");//邮件主题.
+        message.setText("用户名：" + userName + "密码：" + password);//邮件内容.
+        mailSender.send(message);//发送邮件
+        log.info("{}", JSONUtil.toJsonStr(message));
     }
 
 }
