@@ -14,7 +14,8 @@
 │  └─nacos-server-1.0.0.zip			-- nacos 注册中心配置中心
 │  └─sentinel-dashboard-1.6.1.jar	-- sentinel (可以不使用)
 ```
-    
+### 界面效果
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0813/220722_6a3127ff_734677.png "")
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0813/220744_b3334663_734677.png "")
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0813/220805_a88902eb_734677.png "")
