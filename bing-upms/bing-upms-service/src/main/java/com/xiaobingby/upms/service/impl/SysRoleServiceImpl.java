@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -45,6 +46,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .in(SysRolePermission::getRoleId, Arrays.asList(ids))
         );
         return remove2;
+    }
+
+    @Override
+    public List<SysRole> listRolesByUserId(Long userId) {
+        return baseMapper.listRolesByUserId(userId);
     }
 
 }

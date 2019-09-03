@@ -2,12 +2,14 @@ package com.xiaobingby.upms.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaobingby.upms.dto.SysUserDetailsDto;
 import com.xiaobingby.upms.dto.UserDto;
-import com.xiaobingby.upms.entity.*;
+import com.xiaobingby.upms.entity.SysPermission;
+import com.xiaobingby.upms.entity.SysRole;
+import com.xiaobingby.upms.entity.SysUser;
+import com.xiaobingby.upms.entity.SysUserRole;
 import com.xiaobingby.upms.mapper.SysUserMapper;
 import com.xiaobingby.upms.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -67,12 +69,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUserDetailsDto = new SysUserDetailsDto();
             BeanUtils.copyProperties(sysUser, sysUserDetailsDto);
 
-            List<SysRole> sysRoles = findUserRole(sysUser.getId());
+            List<SysRole> sysRoles = iSysRoleService.listRolesByUserId(sysUser.getId());
 
-            List<SysPermission> sysPermissions = findRolePermission(sysRoles);
+            List<SysPermission> sysPermissionsAll = new ArrayList<>();
+            sysRoles.forEach(item -> {
+                List<SysPermission> sysRolePermissions = iSysPermissionService.listPermissionByRoleId(item.getId());
+                sysPermissionsAll.addAll(sysRolePermissions);
+            });
 
             sysUserDetailsDto.setRoles(sysRoles);
-            sysUserDetailsDto.setPermissions(sysPermissions);
+            sysUserDetailsDto.setPermissions(sysPermissionsAll);
         }
         return sysUserDetailsDto;
     }
@@ -152,51 +158,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         BeanUtils.copyProperties(sysUser, userDto);
         userDto.setRoleIds(roleIds);
         return userDto;
-    }
-
-    /**
-     * 查询用户角色
-     *
-     * @param id
-     * @return
-     */
-    private List<SysRole> findUserRole(Long id) {
-        QueryWrapper<SysUserRole> userRoleQueryWrapper = new QueryWrapper<>();
-        userRoleQueryWrapper.eq("user_id", id);
-        List<SysUserRole> userRoles = iSysUserRoleService.list(userRoleQueryWrapper);
-
-        ArrayList<Long> roleIds = new ArrayList<>();
-        userRoles.parallelStream().forEach(item -> {
-            roleIds.add(item.getRoleId());
-        });
-        List<SysRole> sysRoles = (List) iSysRoleService.listByIds(roleIds);
-        return sysRoles;
-    }
-
-    /**
-     * 查询角色权限
-     *
-     * @param roles
-     * @return
-     */
-    private List<SysPermission> findRolePermission(List<SysRole> roles) {
-        List<Long> roleIds = new ArrayList<>();
-        roles.parallelStream().forEach(item -> {
-            roleIds.add(item.getId());
-        });
-        List<SysRolePermission> sysRolePermissions = iSysRolePermissionService.list(Wrappers.<SysRolePermission>lambdaQuery()
-                .in(SysRolePermission::getRoleId, roleIds)
-        );
-
-        ArrayList<Long> permissionIds = new ArrayList<>();
-        sysRolePermissions.parallelStream().forEach(item -> {
-            permissionIds.add(item.getPermissionId());
-        });
-        List<SysPermission> sysPermissions = iSysPermissionService.list(Wrappers.<SysPermission>lambdaQuery()
-                .in(SysPermission::getId, permissionIds)
-                .eq(SysPermission::getType, 2)
-        );
-        return sysPermissions;
     }
 
     private void sendPasswordMail(String userName, String password, String email) {

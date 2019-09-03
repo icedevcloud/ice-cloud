@@ -1,7 +1,8 @@
 package com.xiaobingby.upms.mapper;
 
-import com.xiaobingby.upms.entity.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xiaobingby.upms.entity.SysPermission;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,5 +17,13 @@ import java.util.List;
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     List<SysPermission> findUserMenus(Long id);
+
+    /**
+     * 角色ID查询权限
+     *
+     * @param roleId
+     * @return
+     */
+    List<SysPermission> listPermissionByRoleId(@Param("roleId") Long roleId);
 
 }

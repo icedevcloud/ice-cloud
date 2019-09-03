@@ -4,24 +4,24 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xiaobingby.upms.entity.SysPermission">
-    <result column="id" property="id" />
-    <result column="create_time" property="createTime" />
-    <result column="update_time" property="updateTime" />
-        <result column="pid" property="pid" />
-        <result column="title" property="title" />
-        <result column="name" property="name" />
-        <result column="path" property="path" />
-        <result column="component" property="component" />
-        <result column="icon" property="icon" />
-        <result column="url" property="url" />
-        <result column="perm_code" property="permCode" />
-        <result column="status" property="status" />
-        <result column="sort" property="sort" />
-        <result column="type" property="type" />
-        <result column="hide_in_menu" property="hideInMenu" />
-        <result column="hide_in_bread" property="hideInBread" />
-        <result column="not_cache" property="notCache" />
-        <result column="description" property="description" />
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="pid" property="pid"/>
+        <result column="title" property="title"/>
+        <result column="name" property="name"/>
+        <result column="path" property="path"/>
+        <result column="component" property="component"/>
+        <result column="icon" property="icon"/>
+        <result column="url" property="url"/>
+        <result column="perm_code" property="permCode"/>
+        <result column="status" property="status"/>
+        <result column="sort" property="sort"/>
+        <result column="type" property="type"/>
+        <result column="hide_in_menu" property="hideInMenu"/>
+        <result column="hide_in_bread" property="hideInBread"/>
+        <result column="not_cache" property="notCache"/>
+        <result column="description" property="description"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -39,6 +39,15 @@
                 select role_id from sys_user_role WHERE user_id = #{userId}
             )
         ) AND type = 1 ORDER BY sort
+    </select>
+
+    <select id="listPermissionByRoleId" resultType="com.xiaobingby.upms.entity.SysPermission">
+        SELECT
+            *
+        FROM
+            sys_permission
+        WHERE
+            id IN ( SELECT permission_id FROM sys_role_permission WHERE type = 2 and role_id = #{roleId} )
     </select>
 
 </mapper>

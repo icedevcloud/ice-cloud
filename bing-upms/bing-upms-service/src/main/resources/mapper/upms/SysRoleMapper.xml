@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xiaobingby.upms.entity.SysRole">
-    <result column="id" property="id" />
-    <result column="create_time" property="createTime" />
-    <result column="update_time" property="updateTime" />
-        <result column="name" property="name" />
-        <result column="sort" property="sort" />
-        <result column="role_code" property="roleCode" />
-        <result column="status" property="status" />
-        <result column="default_role" property="defaultRole" />
-        <result column="description" property="description" />
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="role_code" property="roleCode"/>
+        <result column="status" property="status"/>
+        <result column="default_role" property="defaultRole"/>
+        <result column="description" property="description"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -22,5 +22,12 @@
         update_time,
         name, sort, role_code, status, default_role, description
     </sql>
+
+    <select id="listRolesByUserId" resultType="com.xiaobingby.upms.entity.SysRole">
+        SELECT * from sys_role WHERE id in (
+            SELECT role_id FROM `sys_user_role` WHERE user_id =#{userId}
+        ) and status = 1
+    </select>
+
 
 </mapper>

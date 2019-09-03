@@ -1,14 +1,13 @@
 package com.xiaobingby.upms.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaobingby.common.security.dto.UserDetailsDto;
 import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.entity.SysRolePermission;
 import com.xiaobingby.upms.mapper.SysPermissionMapper;
 import com.xiaobingby.upms.service.ISysPermissionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
 import com.xiaobingby.upms.vo.MenuMeta;
 import com.xiaobingby.upms.vo.MenuTreeVo;
@@ -127,6 +126,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             i.setChildren(subMenuTreeVos);
         });
         return menuTreeVos;
+    }
+
+    @Override
+    public List<SysPermission> listPermissionByRoleId(Long roleId) {
+        return baseMapper.listPermissionByRoleId(roleId);
     }
 
     /**
