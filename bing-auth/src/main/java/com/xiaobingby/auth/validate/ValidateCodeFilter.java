@@ -70,7 +70,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         if (StringUtils.isEmpty(code)) {
             throw new ValidateCodeException("验证码过期，请重新获取验证码");
         }
-        if (!StringUtils.equals(code, codeInRequest)) {
+        if (!StringUtils.equalsIgnoreCase(code, codeInRequest)) {
             throw new ValidateCodeException("验证码错误");
         }
     }
