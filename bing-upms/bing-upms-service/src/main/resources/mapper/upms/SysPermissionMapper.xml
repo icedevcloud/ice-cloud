@@ -33,12 +33,16 @@
     </sql>
 
     <select id="findUserMenus" resultMap="BaseResultMap">
-        SELECT * FROM sys_permission WHERE id in (
-            SELECT permission_id FROM sys_role_permission WHERE role_id in
-            (
-                select role_id from sys_user_role WHERE user_id = #{userId}
+        SELECT * FROM sys_permission
+            WHERE id in (
+                SELECT permission_id FROM sys_role_permission WHERE role_id in
+                (
+                    select role_id from sys_user_role WHERE user_id = #{userId}
+                )
             )
-        ) AND type = 1 ORDER BY sort
+            AND type = 1
+            AND status = 1
+          ORDER BY sort
     </select>
 
     <select id="listPermissionByRoleId" resultType="com.xiaobingby.upms.entity.SysPermission">
@@ -48,6 +52,7 @@
             sys_permission
         WHERE
             id IN ( SELECT permission_id FROM sys_role_permission WHERE type = 2 and role_id = #{roleId} )
+            AND status = 1
     </select>
 
 </mapper>
