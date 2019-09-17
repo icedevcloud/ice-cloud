@@ -141,7 +141,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      */
     private void modifyPermissionTreeVo(SysRolePermission sysRolePermission, List<PermissionTreeVo> permissionTree) {
         permissionTree.forEach(item -> {
-            if (sysRolePermission.getPermissionId() == item.getId()) {
+            if (sysRolePermission.getPermissionId().longValue() == item.getId().longValue()) {
                 item.setChecked(true);
                 return;
             }
