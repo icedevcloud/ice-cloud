@@ -20,6 +20,7 @@
         <module>bing-test</module>
         <module>bing-view</module>
         <module>bing-mybatis</module>
+        <module>bing-flow</module>
     </modules>
 
     <properties>
