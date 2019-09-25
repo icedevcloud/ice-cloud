@@ -1,11 +1,13 @@
 package com.xiaobingby.flow.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.*;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.Task;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author :xie
@@ -65,10 +68,8 @@ public class ExpenseController {
     @ResponseBody
     public Object list(String userId) {
         List<Task> tasks = taskService.createTaskQuery().taskAssignee(userId).orderByTaskCreateTime().desc().list();
-        for (Task task : tasks) {
-            System.out.println(task.toString());
-        }
-        return tasks.toArray().toString();
+        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(tasks);
+        return tasks;
     }
 
 
