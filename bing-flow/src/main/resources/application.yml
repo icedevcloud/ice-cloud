@@ -4,9 +4,11 @@ spring:
     driver-class-name : com.mysql.jdbc.Driver
     url: jdbc:mysql://sh-cdb-4tu4mj0t.sql.tencentcdb.com:63257/flow
     username: root
-    password: Xiehuan!3
+    password:
 flowable:
   async-executor-activate: false
   database-schema-update: true
 server:
-  port: 1010
+  port: 8888
+  servlet:
+   context-path: /flowable-modeler
