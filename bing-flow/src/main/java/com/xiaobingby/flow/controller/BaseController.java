@@ -2,10 +2,11 @@ package com.xiaobingby.flow.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.HistoryService;
+import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
-import org.flowable.task.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author :xie

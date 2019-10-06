@@ -5,6 +5,8 @@ spring:
     url: jdbc:mysql://sh-cdb-4tu4mj0t.sql.tencentcdb.com:63257/flow
     username: root
     password:
+    hikari:
+      max-lifetime: 1200000
 flowable:
   async-executor-activate: false
   database-schema-update: true
@@ -12,3 +14,6 @@ server:
   port: 8888
   servlet:
    context-path: /flowable-modeler
+mybatis-plus:
+  mapper-locations: classpath:mapper/*/*Mapper.xml
+  type-aliases-package: com.xiaobingby.flow.dto
