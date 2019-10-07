@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 菜单权限管理展示TreeVo
+ * 嵌套子表格权限管理展示TableTreeVo
  *
  * @author XiaoBingBy
  * @date 2018-12-06 14:43
@@ -16,12 +16,10 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class PermissionTreeVo extends SysPermission implements Serializable {
+public class PermissionTableTreeVo extends SysPermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String key;
-
-    private List<PermissionTreeVo> children;
+    private List<PermissionTableTreeVo> children;
 
 }

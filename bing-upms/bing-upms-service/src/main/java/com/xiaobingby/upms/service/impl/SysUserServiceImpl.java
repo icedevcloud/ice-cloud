@@ -97,14 +97,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         boolean save1 = this.save(sysUser);
 
         Collection<String> roleIds = userDto.getRoleIds();
-        List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
-            SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(userDto.getId());
-            userRole.setRoleId(Long.valueOf(roleId));
-            return userRole;
-        }).collect(Collectors.toList());
-        boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
-        return save2;
+        if (roleIds != null) {
+            List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(userDto.getId());
+                userRole.setRoleId(Long.valueOf(roleId));
+                return userRole;
+            }).collect(Collectors.toList());
+            boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
+        }
+        return save1;
     }
 
     @Transactional
@@ -122,14 +124,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         );
 
         Collection<String> roleIds = userDto.getRoleIds();
-        List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
-            SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(userDto.getId());
-            userRole.setRoleId(Long.valueOf(roleId));
-            return userRole;
-        }).collect(Collectors.toList());
-        boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
-        return save2;
+        if (roleIds != null) {
+            List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(userDto.getId());
+                userRole.setRoleId(Long.valueOf(roleId));
+                return userRole;
+            }).collect(Collectors.toList());
+            boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
+        }
+        return save;
     }
 
     @Transactional

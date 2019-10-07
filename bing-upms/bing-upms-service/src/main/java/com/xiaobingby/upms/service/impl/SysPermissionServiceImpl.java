@@ -1,16 +1,16 @@
 package com.xiaobingby.upms.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xiaobingby.common.security.dto.UserDetailsDto;
-import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.entity.SysRolePermission;
 import com.xiaobingby.upms.mapper.SysPermissionMapper;
 import com.xiaobingby.upms.service.ISysPermissionService;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
-import com.xiaobingby.upms.vo.MenuMeta;
-import com.xiaobingby.upms.vo.MenuTreeVo;
+import com.xiaobingby.upms.vo.AntRolePermissionTreeVo;
+import com.xiaobingby.upms.vo.AntRouterTreeVo;
+import com.xiaobingby.upms.vo.PermissionTableTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Autowired
     private ISysRolePermissionService iSysRolePermissionService;
 
-    @Autowired
-    private SysPermissionMapper sysPermissionMapper;
-
     /**
      * 构造后台菜单Tree
      *
@@ -52,6 +49,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             if (permission.getPid() == 0) {
                 PermissionTreeVo permissionTreeVo = new PermissionTreeVo();
                 BeanUtils.copyProperties(permission, permissionTreeVo);
+                permissionTreeVo.setKey(String.valueOf(permission.getId()));
                 genPermissionTreeVo(permissionTreeVo, permissions);
                 permissionTreeVos.add(permissionTreeVo);
             }
@@ -71,11 +69,19 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             if (permissionTreeVo.getId().longValue() == permission.getPid().longValue()) {
                 PermissionTreeVo temp = new PermissionTreeVo();
                 BeanUtils.copyProperties(permission, temp);
+                temp.setKey(String.valueOf(permission.getId()));
                 genPermissionTreeVo(temp, permissions);
                 permissionTreeVos.add(temp);
             }
         }
-        permissionTreeVo.setChildren(permissionTreeVos);
+        permissionTreeVo.setChildren(permissionTreeVos.size() >= 1 ? permissionTreeVos : null);
+    }
+
+    @Override
+    public List<PermissionTableTreeVo> getPermissionTableTree() {
+        String souceStr = JSONObject.toJSONString(this.getPermissionTree());
+        List<PermissionTableTreeVo> permissionTableTreeVos = JSONObject.parseArray(souceStr, PermissionTableTreeVo.class);
+        return permissionTableTreeVos;
     }
 
     @Transactional
@@ -90,47 +96,85 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<PermissionTreeVo> getRolePermissionTree(Long roleId) {
+    public AntRolePermissionTreeVo getRolePermissionTree(Long roleId) {
         // 查询角色拥有权限ID
         List<SysRolePermission> sysRolePermissions = iSysRolePermissionService.list(Wrappers.<SysRolePermission>lambdaQuery()
                 .eq(SysRolePermission::getRoleId, roleId)
         );
+
         List<PermissionTreeVo> permissionTree = this.getPermissionTree();
-        sysRolePermissions.forEach(rolePermission -> {
-            modifyPermissionTreeVo(rolePermission, permissionTree);
+        permissionTree.forEach(item -> {
+            item.setKey(String.valueOf(item.getId()));
+        });
+
+        ArrayList<String> ids = new ArrayList<>();
+        sysRolePermissions.forEach(item -> {
+            ids.add(String.valueOf(item.getPermissionId()));
         });
         modifyPermissionTreeVo(permissionTree);
-        return permissionTree;
+
+        AntRolePermissionTreeVo antRolePermissionTreeVo = new AntRolePermissionTreeVo();
+        antRolePermissionTreeVo.setIds(ids);
+        antRolePermissionTreeVo.setRecord(permissionTree);
+        return antRolePermissionTreeVo;
     }
 
-    @Override
-    public List<MenuTreeVo> getUserMenuTree() {
-        UserDetailsDto userDetails = SecurityUtils.getUserDetails();
-        List<SysPermission> userMenus = sysPermissionMapper.findUserMenus(userDetails.getId());
-        ArrayList<MenuTreeVo> menuTreeVos = new ArrayList<>();
-        // 构造一级菜单
-        userMenus.forEach(item -> {
-            if (item.getPid() == 0) {
-                GenOneMenuTreeVo(menuTreeVos, item);
-            }
-        });
-
-        // 构造二级菜单
-        menuTreeVos.forEach(i -> {
-            ArrayList<MenuTreeVo> subMenuTreeVos = new ArrayList<>();
-            userMenus.forEach(j -> {
-                if (i.getId() == j.getPid()) {
-                    GenOneMenuTreeVo(subMenuTreeVos, j);
-                }
-            });
-            i.setChildren(subMenuTreeVos);
-        });
-        return menuTreeVos;
+    /**
+     * 递归获取生成 ids 数组
+     *
+     * @param permissionTree
+     * @param ids
+     */
+    private void genAllPermissionTreeIds(List<PermissionTreeVo> permissionTree, ArrayList<String> ids) {
+        if (ids == null) {
+            return;
+        }
+        for (PermissionTreeVo permissionTreeVo : permissionTree) {
+            Long id = permissionTreeVo.getId();
+            ids.add(String.valueOf(id));
+            if (permissionTreeVo.getChildren() != null) genAllPermissionTreeIds(permissionTreeVo.getChildren(), ids);
+        }
     }
 
     @Override
     public List<SysPermission> listPermissionByRoleId(Long roleId) {
         return baseMapper.listPermissionByRoleId(roleId);
+    }
+
+    @Override
+    public List<AntRouterTreeVo> getRouterByUser(Long userId) {
+        List<SysPermission> permissions = baseMapper.findUserMenus(userId);
+        ArrayList<AntRouterTreeVo> antRouterTreeVos = new ArrayList<>();
+        for (SysPermission permission : permissions) {
+            if (permission.getPid() == 0) {
+                AntRouterTreeVo antRouterTreeVo = new AntRouterTreeVo();
+                BeanUtils.copyProperties(permission, antRouterTreeVo);
+                antRouterTreeVo.setKey(permission.getName());
+                genAntRouterTreeVo(antRouterTreeVo, permissions);
+                antRouterTreeVos.add(antRouterTreeVo);
+            }
+        }
+        return antRouterTreeVos;
+    }
+
+    /**
+     * 递归构建Ant菜单
+     *
+     * @param antRouterTreeVo
+     * @param permissions
+     */
+    private void genAntRouterTreeVo(AntRouterTreeVo antRouterTreeVo, List<SysPermission> permissions) {
+        ArrayList<AntRouterTreeVo> antRouterTreeVos = new ArrayList<>();
+        for (SysPermission permission : permissions) {
+            if (antRouterTreeVo.getId().longValue() == permission.getPid().longValue()) {
+                AntRouterTreeVo temp = new AntRouterTreeVo();
+                BeanUtils.copyProperties(permission, temp);
+                temp.setKey(permission.getName());
+                genAntRouterTreeVo(temp, permissions);
+                antRouterTreeVos.add(temp);
+            }
+        }
+        antRouterTreeVo.setChildren(antRouterTreeVos.size() >= 1 ? antRouterTreeVos : null);
     }
 
     /**
@@ -141,10 +185,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      */
     private void modifyPermissionTreeVo(SysRolePermission sysRolePermission, List<PermissionTreeVo> permissionTree) {
         permissionTree.forEach(item -> {
-            if (sysRolePermission.getPermissionId().longValue() == item.getId().longValue()) {
-                item.setChecked(true);
-                return;
-            }
+            item.setKey(String.valueOf(item.getId()));
             if (item.getChildren() != null) {
                 this.modifyPermissionTreeVo(sysRolePermission, item.getChildren());
             }
@@ -158,33 +199,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      */
     private void modifyPermissionTreeVo(List<PermissionTreeVo> permissionTree) {
         permissionTree.forEach(item -> {
-            item.setExpand(true);
+            item.setKey(String.valueOf(item.getId()));
             if (item.getChildren() != null) {
                 this.modifyPermissionTreeVo(item.getChildren());
             }
         });
-    }
-
-    /**
-     * Permission To ArrayList<MenuTreeVo> meGenOneMenuTreeVonuTreeVos
-     *
-     * @param menuTreeVos
-     * @param item
-     */
-    private void GenOneMenuTreeVo(ArrayList<MenuTreeVo> menuTreeVos, SysPermission item) {
-        MenuTreeVo menuTreeVo = new MenuTreeVo();
-        menuTreeVo.setId(item.getId());
-        menuTreeVo.setPath(item.getPath());
-        menuTreeVo.setName(item.getName());
-        menuTreeVo.setComponent(item.getComponent());
-        MenuMeta menuMeta = new MenuMeta();
-        menuMeta.setTitle(item.getTitle());
-        menuMeta.setIcon(item.getIcon());
-        menuMeta.setHideInBread(item.getHideInBread());
-        menuMeta.setHideInMenu(item.getHideInMenu());
-        menuMeta.setNotCache(item.getNotCache());
-        menuTreeVo.setMeta(menuMeta);
-        menuTreeVos.add(menuTreeVo);
     }
 
 }

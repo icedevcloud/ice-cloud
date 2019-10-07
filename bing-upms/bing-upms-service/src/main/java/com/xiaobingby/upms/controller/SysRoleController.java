@@ -9,6 +9,7 @@ import com.xiaobingby.upms.entity.SysRole;
 import com.xiaobingby.upms.service.ISysPermissionService;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
 import com.xiaobingby.upms.service.ISysRoleService;
+import com.xiaobingby.upms.vo.AntRolePermissionTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,18 +74,20 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
         if (StringUtils.isNotEmpty(roleName)) {
             queryWrapper.like("name", roleName);
         }
+        queryWrapper.orderByDesc("create_time");
         List<SysRole> list = iSysRoleService.list(queryWrapper);
         return R.ok(list);
     }
 
     @ApiOperation(value = "角色权限树查询接口", notes = "角色权限树查询接口", produces = "application/json")
     @GetMapping("/permissionTree/{id}")
-    public R<List<PermissionTreeVo>> getRolePermissionTree(@PathVariable Long id) {
-        List<PermissionTreeVo> userRolePermissionTree = iSysPermissionService.getRolePermissionTree(id);
-        return R.ok(userRolePermissionTree);
+    public R<AntRolePermissionTreeVo> getRolePermissionTree(@PathVariable Long id) {
+        AntRolePermissionTreeVo rolePermissionTree = iSysPermissionService.getRolePermissionTree(id);
+        return R.ok(rolePermissionTree);
     }
 
-    @PostMapping("/updateRolePermission")
+    @ApiOperation(value = "分配角色权限接口", notes = "分配角色权限接口", produces = "application/json")
+    @PutMapping("/updateRolePermission")
     public R updateRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
         boolean b = iSysRolePermissionService.updateRolePermission(rolePermissionDto);
         return R.ok(b);

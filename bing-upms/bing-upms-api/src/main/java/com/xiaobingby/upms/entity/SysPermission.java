@@ -58,17 +58,14 @@ public class SysPermission extends BaseEntity {
     @ApiModelProperty(value = "排序号")
     private BigDecimal sort;
 
-    @ApiModelProperty(value = "类型 0.菜单 1 按钮")
+    @ApiModelProperty(value = "类型 0.一级菜单 2.子菜单 2.按钮")
     private Integer type;
 
     @ApiModelProperty(value = "设为true后在左侧菜单不会显示该页面选项")
-    private Boolean hideInMenu;
+    private Boolean hidden;
 
-    @ApiModelProperty(value = "设为true后在顶部显示面包屑")
-    private Boolean hideInBread;
-
-    @ApiModelProperty(value = "设为true后页面不会缓存")
-    private Boolean notCache;
+    @ApiModelProperty(value = "设为true后页面缓存")
+    private Boolean cache;
 
     @ApiModelProperty(value = "描述")
     private String description;

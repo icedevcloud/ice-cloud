@@ -24,4 +24,5 @@ public interface ISysUserService extends IService<SysUser> {
     boolean removeUserByIds(Long[] ids);
 
     UserDto findUserRolesInfo(Long id);
+
 }

@@ -2,8 +2,7 @@ package com.xiaobingby.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xiaobingby.upms.entity.SysPermission;
-import com.xiaobingby.upms.vo.MenuTreeVo;
-import com.xiaobingby.upms.vo.PermissionTreeVo;
+import com.xiaobingby.upms.vo.*;
 
 import java.util.List;
 
@@ -17,13 +16,28 @@ import java.util.List;
  */
 public interface ISysPermissionService extends IService<SysPermission> {
 
-    List<PermissionTreeVo> getPermissionTree();
+    /**
+     * 嵌套子表格权限管理展接口
+     *
+     * @return
+     */
+    List<PermissionTableTreeVo> getPermissionTableTree();
 
+    /**
+     * 删除权限
+     *
+     * @param ids
+     * @return
+     */
     boolean delPermission(Long[] ids);
 
-    List<PermissionTreeVo> getRolePermissionTree(Long roleId);
-
-    List<MenuTreeVo> getUserMenuTree();
+    /**
+     * 获取角色权限
+     *
+     * @param roleId
+     * @return
+     */
+    AntRolePermissionTreeVo getRolePermissionTree(Long roleId);
 
     /**
      * 角色ID查询权限
@@ -32,5 +46,12 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @return
      */
     List<SysPermission> listPermissionByRoleId(Long roleId);
+
+    /**
+     * Ant 前端路由接口
+     *
+     * @return
+     */
+    List<AntRouterTreeVo> getRouterByUser(Long userId);
 
 }
