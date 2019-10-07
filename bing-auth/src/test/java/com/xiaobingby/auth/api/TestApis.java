@@ -1,8 +1,10 @@
 package com.xiaobingby.auth.api;
 
 import com.xiaobingby.common.core.api.R;
+import com.xiaobingby.upms.api.feign.IFlowFeign;
 import com.xiaobingby.upms.api.feign.IUserFeign;
 import com.xiaobingby.upms.dto.SysUserDetailsDto;
+import com.xiaobingby.upms.entity.SysUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,6 +28,9 @@ public class TestApis {
 
     @Autowired
     private IUserFeign iUserFeign;
+
+    @Autowired
+    private IFlowFeign iFlowFeign;
 
     @Test
     public void test1() {
@@ -52,6 +57,12 @@ public class TestApis {
                 executorService.shutdown();
             }
         }
+    }
+
+    @Test
+    public void test2() {
+        R<List<SysUser>> listR = iFlowFeign.roleIdByUsers(8l);
+        logger.info("{}", listR);
     }
 
     class TaskWithResult implements Callable<String> {
