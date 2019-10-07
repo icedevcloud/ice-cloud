@@ -2,6 +2,7 @@ package com.xiaobingby.upms.service;
 
 import com.xiaobingby.upms.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xiaobingby.upms.entity.SysUser;
 
 import java.util.List;
 
@@ -24,5 +25,13 @@ public interface ISysRoleService extends IService<SysRole> {
      * @return
      */
     List<SysRole> listRolesByUserId(Long userId);
+
+    /**
+     * 通过角色ID查询所有用户
+     *
+     * @param roleId
+     * @return
+     */
+    List<SysUser> roleIdByUsers(Long roleId);
 
 }

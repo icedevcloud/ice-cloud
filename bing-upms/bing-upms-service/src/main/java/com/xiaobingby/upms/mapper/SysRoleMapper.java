@@ -2,6 +2,7 @@ package com.xiaobingby.upms.mapper;
 
 import com.xiaobingby.upms.entity.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xiaobingby.upms.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +24,13 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @return
      */
     List<SysRole> listRolesByUserId(@Param("userId") Long userId);
+
+    /**
+     * 通过角色ID查询所有用户
+     *
+     * @param roleId
+     * @return
+     */
+    List<SysUser> roleIdByUsers(@Param("roleId") Long roleId);
 
 }

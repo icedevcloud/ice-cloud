@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiaobingby.upms.entity.SysRole;
 import com.xiaobingby.upms.entity.SysRolePermission;
+import com.xiaobingby.upms.entity.SysUser;
 import com.xiaobingby.upms.entity.SysUserRole;
 import com.xiaobingby.upms.mapper.SysRoleMapper;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
@@ -51,6 +52,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public List<SysRole> listRolesByUserId(Long userId) {
         return baseMapper.listRolesByUserId(userId);
+    }
+
+    @Override
+    public List<SysUser> roleIdByUsers(Long roleId) {
+        List<SysUser> sysUsers = baseMapper.roleIdByUsers(roleId);
+        sysUsers.forEach(item -> item.setPassword(""));
+        return baseMapper.roleIdByUsers(roleId);
     }
 
 }
