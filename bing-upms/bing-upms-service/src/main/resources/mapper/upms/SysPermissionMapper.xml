@@ -18,9 +18,8 @@
         <result column="status" property="status"/>
         <result column="sort" property="sort"/>
         <result column="type" property="type"/>
-        <result column="hide_in_menu" property="hideInMenu"/>
-        <result column="hide_in_bread" property="hideInBread"/>
-        <result column="not_cache" property="notCache"/>
+        <result column="hidden" property="hidden"/>
+        <result column="cache" property="cache"/>
         <result column="description" property="description"/>
     </resultMap>
 
