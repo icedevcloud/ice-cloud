@@ -37,7 +37,7 @@ public class AuthenctiationFailureHandler extends SimpleUrlAuthenticationFailure
             R<Object> objectR = new R<>();
             objectR.setCode(HttpStatus.BAD_REQUEST.value());
             objectR.setData(exception);
-            objectR.setMsg(exception.getMessage());
+            objectR.setMessage(exception.getMessage());
             response.getWriter().write(objectMapper.writeValueAsString(objectR));
         }
     }

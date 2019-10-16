@@ -10,6 +10,6 @@ public interface IErrorCode {
     /**
      * 错误描述
      */
-    String getMsg();
+    String getMessage();
 
 }

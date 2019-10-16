@@ -62,9 +62,9 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
     }
 
     @ApiOperation(value = "删除角色接口", notes = "删除角色接口", produces = "application/json")
-    @DeleteMapping("{ids}")
-    public R<Boolean> delRole(@PathVariable Long[] ids) {
-        return R.ok(iSysRoleService.delRole(ids));
+    @DeleteMapping("{id}")
+    public R<Boolean> delRole(@PathVariable Long id) {
+        return R.ok(iSysRoleService.delRole(id));
     }
 
     @ApiOperation(value = "角色名查询角色接口", notes = "角色名查询角色接口", produces = "application/json")
