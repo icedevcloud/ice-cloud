@@ -5,17 +5,16 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xiaobingby.flow.dto.SysWorkFlow">
         <id column="id" property="id" />
-        <result column="name" property="name" />
+        <result column="flow_name" property="flowName" />
         <result column="content" property="content" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="step" property="step" />
-        <result column="type" property="type" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, content, create_time, update_time, step, type
+        id, flow_name, content, create_time, update_time, step
     </sql>
 
 </mapper>

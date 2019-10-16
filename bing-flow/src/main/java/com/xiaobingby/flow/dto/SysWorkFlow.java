@@ -32,7 +32,7 @@ public class SysWorkFlow {
     private Integer id;
 
     @ApiModelProperty(value = "流程名称")
-    private String name;
+    private String flowName;
 
     @ApiModelProperty(value = "描述")
     private String content;
@@ -45,9 +45,6 @@ public class SysWorkFlow {
 
     @ApiModelProperty(value = "步骤   这里面应该是存一个list dto的json字符串")
     private String step;
-
-    @ApiModelProperty(value = "1 按照角色；2  按照用户；")
-    private String type;
 
 
 }
