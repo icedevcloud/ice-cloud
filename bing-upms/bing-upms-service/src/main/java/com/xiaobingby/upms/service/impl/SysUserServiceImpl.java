@@ -138,11 +138,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public boolean removeUserByIds(Long[] ids) {
-        boolean remove = this.removeByIds(Arrays.asList(ids));
+    public boolean removeUserByIds(Long id) {
+        boolean remove = this.removeById(id);
 
         boolean remove1 = iSysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
-                .in(SysUserRole::getUserId, Arrays.asList(ids))
+                .eq(SysUserRole::getUserId, id)
         );
         return remove1;
     }

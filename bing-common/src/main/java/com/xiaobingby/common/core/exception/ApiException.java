@@ -1,5 +1,6 @@
 package com.xiaobingby.common.core.exception;
 
+import com.xiaobingby.common.core.api.ErrorCode;
 import com.xiaobingby.common.core.api.IErrorCode;
 
 /**
@@ -13,23 +14,27 @@ public class ApiException extends RuntimeException {
     private IErrorCode errorCode;
 
     public ApiException(IErrorCode errorCode) {
-        super(errorCode.getMsg());
+        super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 
     public ApiException(String message) {
         super(message);
+        this.errorCode = new ErrorCode(500, message);
     }
 
-    public ApiException(Throwable cause) {
-        super(cause);
+    public ApiException(Integer code, String message) {
+        super(message);
+        this.errorCode = new ErrorCode(code, message);
     }
 
-    public ApiException(String message, Throwable cause) {
-        super(message, cause);
+    public ApiException(Integer code, String message, Exception e) {
+        super(message);
+        this.errorCode = new ErrorCode(code, message);
     }
 
     public IErrorCode getErrorCode() {
         return errorCode;
     }
+
 }

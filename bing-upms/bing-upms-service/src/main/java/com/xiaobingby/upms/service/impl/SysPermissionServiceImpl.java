@@ -1,8 +1,8 @@
 package com.xiaobingby.upms.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xiaobingby.common.core.exception.ApiException;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.entity.SysRolePermission;
 import com.xiaobingby.upms.mapper.SysPermissionMapper;
@@ -10,7 +10,6 @@ import com.xiaobingby.upms.service.ISysPermissionService;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
 import com.xiaobingby.upms.vo.AntRolePermissionTreeVo;
 import com.xiaobingby.upms.vo.AntRouterTreeVo;
-import com.xiaobingby.upms.vo.PermissionTableTreeVo;
 import com.xiaobingby.upms.vo.PermissionTreeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,32 +43,42 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         List<SysPermission> permissions = this.list(Wrappers.<SysPermission>lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
         );
+        genPermissionTreeVo(permissionTreeVos, permissions);
+        return permissionTreeVos;
+    }
+
+    /**
+     * 构建权限子节点
+     *
+     * @param permissionTreeVos
+     * @param permissions
+     */
+    private void genPermissionTreeVo(ArrayList<PermissionTreeVo> permissionTreeVos, List<SysPermission> permissions) {
         for (SysPermission permission : permissions) {
             if (permission.getPid() == 0) {
                 PermissionTreeVo permissionTreeVo = new PermissionTreeVo();
                 BeanUtils.copyProperties(permission, permissionTreeVo);
                 permissionTreeVo.setKey(String.valueOf(permission.getId()));
-                genPermissionTreeVo(permissionTreeVo, permissions);
+                genSubPermissionTreeVo(permissionTreeVo, permissions);
                 permissionTreeVos.add(permissionTreeVo);
             }
         }
-        return permissionTreeVos;
     }
 
     /**
-     * 递归遍历节点
+     * 构建权限子节点 递归遍历节点
      *
      * @param permissionTreeVo
      * @param permissions
      */
-    private void genPermissionTreeVo(PermissionTreeVo permissionTreeVo, List<SysPermission> permissions) {
+    private void genSubPermissionTreeVo(PermissionTreeVo permissionTreeVo, List<SysPermission> permissions) {
         ArrayList<PermissionTreeVo> permissionTreeVos = new ArrayList<>();
         for (SysPermission permission : permissions) {
             if (permissionTreeVo.getId().longValue() == permission.getPid().longValue()) {
                 PermissionTreeVo temp = new PermissionTreeVo();
                 BeanUtils.copyProperties(permission, temp);
                 temp.setKey(String.valueOf(permission.getId()));
-                genPermissionTreeVo(temp, permissions);
+                genSubPermissionTreeVo(temp, permissions);
                 permissionTreeVos.add(temp);
             }
         }
@@ -78,19 +86,35 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public List<PermissionTableTreeVo> getPermissionTableTree() {
-        String souceStr = JSONObject.toJSONString(this.getPermissionTree());
-        List<PermissionTableTreeVo> permissionTableTreeVos = JSONObject.parseArray(souceStr, PermissionTableTreeVo.class);
-        return permissionTableTreeVos;
+    public List<PermissionTreeVo> getPermissionTableTree() {
+        List<PermissionTreeVo> permissionTree = this.getPermissionTree();
+        return permissionTree;
+    }
+
+    @Override
+    public ArrayList<PermissionTreeVo> getPermissionMenuTree() {
+        ArrayList<PermissionTreeVo> permissionTreeVos = new ArrayList<>();
+        List<SysPermission> permissions = this.list(Wrappers.<SysPermission>lambdaQuery()
+                .eq(SysPermission::getType, 0)
+                .orderByAsc(SysPermission::getSort)
+        );
+        genPermissionTreeVo(permissionTreeVos, permissions);
+        return permissionTreeVos;
     }
 
     @Transactional
     @Override
-    public boolean delPermission(Long[] ids) {
-        boolean remove = this.removeByIds(Arrays.asList(ids));
+    public boolean delPermission(Long id) {
+        int count = this.count(Wrappers.<SysPermission>lambdaQuery()
+                .eq(SysPermission::getPid, id)
+        );
+        if (count >= 1) {
+            throw new ApiException("存在子菜单,不允许删除");
+        }
+        boolean remove = this.removeById(id);
 
         boolean remove1 = iSysRolePermissionService.remove(Wrappers.<SysRolePermission>lambdaUpdate()
-                .in(SysRolePermission::getPermissionId, Arrays.asList(ids))
+                .eq(SysRolePermission::getPermissionId, id)
         );
         return remove1;
     }

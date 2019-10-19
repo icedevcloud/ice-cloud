@@ -23,4 +23,10 @@ public class TestController {
         return "logger";
     }
 
+    @GetMapping("/t")
+    public String t() {
+        System.out.println(1/0);
+        return "T";
+    }
+
 }

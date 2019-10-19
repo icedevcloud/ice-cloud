@@ -30,28 +30,28 @@ public class R<T> implements Serializable {
     /**
      * 描述
      */
-    private String msg;
+    private String message;
 
     public R() {
         // to do nothing
     }
 
     public R(IErrorCode errorCode) {
-        errorCode = Optional.ofNullable(errorCode).orElse(ErrorCode.FAILED);
+        errorCode = Optional.ofNullable(errorCode).orElse(ErrorCodeEnum.FAILED);
         this.code = errorCode.getCode();
-        this.msg = errorCode.getMsg();
+        this.message = errorCode.getMessage();
     }
 
     public static <T> R<T> ok(T data) {
-        ErrorCode aec = ErrorCode.SUCCESS;
+        ErrorCodeEnum aec = ErrorCodeEnum.SUCCESS;
         if (data instanceof Boolean && Boolean.FALSE.equals(data)) {
-            aec = ErrorCode.FAILED;
+            aec = ErrorCodeEnum.FAILED;
         }
         return restResult(data, aec);
     }
 
-    public static <T> R<T> failed(String msg) {
-        return restResult(null, ErrorCode.FAILED.getCode(), msg);
+    public static <T> R<T> failed(String message) {
+        return restResult(null, ErrorCodeEnum.FAILED.getCode(), message);
     }
 
     public static <T> R<T> failed(IErrorCode errorCode) {
@@ -59,19 +59,19 @@ public class R<T> implements Serializable {
     }
 
     public static <T> R<T> restResult(T data, IErrorCode errorCode) {
-        return restResult(data, errorCode.getCode(), errorCode.getMsg());
+        return restResult(data, errorCode.getCode(), errorCode.getMessage());
     }
 
-    private static <T> R<T> restResult(T data, Integer code, String msg) {
+    private static <T> R<T> restResult(T data, Integer code, String message) {
         R<T> apiResult = new R<>();
         apiResult.setCode(code);
         apiResult.setData(data);
-        apiResult.setMsg(msg);
+        apiResult.setMessage(message);
         return apiResult;
     }
 
     public boolean ok() {
-        return ErrorCode.SUCCESS.getCode() == code;
+        return ErrorCodeEnum.SUCCESS.getCode() == code;
     }
 
     /**
@@ -79,7 +79,7 @@ public class R<T> implements Serializable {
      */
     public T serviceData() {
         if (!ok()) {
-            throw new ApiException(this.msg);
+            throw new ApiException(this.message);
         }
         return data;
     }

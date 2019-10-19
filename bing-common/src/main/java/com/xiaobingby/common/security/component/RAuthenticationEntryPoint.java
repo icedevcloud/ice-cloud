@@ -31,7 +31,7 @@ public class RAuthenticationEntryPoint extends AbstractOAuth2SecurityExceptionHa
             R<Object> objectR = new R<>();
             objectR.setCode(translate.getStatusCodeValue());
             objectR.setData(translate.getBody());
-            objectR.setMsg(translate.getBody().getMessage());
+            objectR.setMessage(translate.getBody().getMessage());
             ResponseEntity<?> responseEntity = enhanceResponse(translate, authException);
             HttpHeaders headers = responseEntity.getHeaders();
             HttpStatus statusCode = responseEntity.getStatusCode();

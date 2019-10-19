@@ -7,12 +7,13 @@ import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.entity.SysPermission;
 import com.xiaobingby.upms.service.ISysPermissionService;
 import com.xiaobingby.upms.vo.AntRouterTreeVo;
-import com.xiaobingby.upms.vo.PermissionTableTreeVo;
+import com.xiaobingby.upms.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,9 +34,16 @@ public class SysPermissionController extends BaseController<ISysPermissionServic
 
     @ApiOperation(value = "嵌套子表格权限管理展接口", notes = "权限树展示接口", produces = "application/json")
     @GetMapping("/getPermissionTableTree")
-    public R<List<PermissionTableTreeVo>> getPermissionTableTree() {
-        List<PermissionTableTreeVo> permissionTableTreeVos = iSysPermissionService.getPermissionTableTree();
-        return new R<List<PermissionTableTreeVo>>().ok(permissionTableTreeVos);
+    public R<List<PermissionTreeVo>> getPermissionTableTree() {
+        List<PermissionTreeVo> permissionTableTree = iSysPermissionService.getPermissionTableTree();
+        return new R<List<PermissionTreeVo>>().ok(permissionTableTree);
+    }
+
+    @ApiOperation(value = "所有权限菜单接口", notes = "所有权限菜单接口", produces = "application/json")
+    @GetMapping("/getPermissionMenuTree")
+    public R<List<PermissionTreeVo>> getPermissionMenuTree() {
+        ArrayList<PermissionTreeVo> permissionMenuTree = iSysPermissionService.getPermissionMenuTree();
+        return new R<List<PermissionTreeVo>>().ok(permissionMenuTree);
     }
 
     @ApiOperation(value = "添加权限接口", notes = "添加权限接口", produces = "application/json")
@@ -51,9 +59,9 @@ public class SysPermissionController extends BaseController<ISysPermissionServic
     }
 
     @ApiOperation(value = "删除权限接口", notes = "删除权限接口", produces = "application/json")
-    @DeleteMapping("{ids}")
-    public R<Boolean> delPermission(@PathVariable Long[] ids) {
-        return R.ok(iSysPermissionService.delPermission(ids));
+    @DeleteMapping("/{id}")
+    public R<Boolean> delPermission(@PathVariable Long id) {
+        return R.ok(iSysPermissionService.delPermission(id));
     }
 
     @ApiOperation(value = "用户前端路由接口", notes = "用户前端路由接口", produces = "application/json")

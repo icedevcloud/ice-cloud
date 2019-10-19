@@ -47,7 +47,4 @@ public class SysUser extends BaseEntity {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "邮箱是否验证 0、否 1、是")
-    private Integer emailVerified;
-
 }

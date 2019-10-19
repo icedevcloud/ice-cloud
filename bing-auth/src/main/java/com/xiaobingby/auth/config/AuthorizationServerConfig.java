@@ -120,7 +120,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 R<Object> objectR = new R<>();
                 objectR.setCode(translate.getStatusCodeValue());
                 objectR.setData(body);
-                objectR.setMsg(body.getMessage());
+                objectR.setMessage(body.getMessage());
                 //R.error(translate.getStatusCodeValue(), body, body.getMessage();
                 response.getWriter().write(objectMapper.writeValueAsString(objectR));
                 response.getWriter().close();
