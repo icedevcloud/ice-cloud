@@ -3,7 +3,6 @@ package com.xiaobingby.flow.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author :xie
@@ -32,6 +31,13 @@ public class SysWorkflowStep implements Serializable {
     /**
      * type==1  会签
      * type==2  普通流转
+     * 默认为2 普通流转
      */
-    private Integer type;
+    private Integer examineType=1;
+    /**
+     * 步骤审核类型
+     * 1 按照用户审核；
+     * 2 按照角色审核
+     */
+    private Integer stepExamineType=2;
 }
