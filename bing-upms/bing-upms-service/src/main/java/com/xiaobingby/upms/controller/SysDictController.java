@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author XiaoBingBy
@@ -28,11 +28,17 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     @Autowired
     private ISysDictService iSysDictService;
 
-    @ApiOperation(value = "字典查询分页接口", notes = "字典查询分页接口", produces = "application/json")
+    @ApiOperation(value = "字典查询父级分页接口", notes = "字典查询父级分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
     public com.xiaobingby.common.core.api.R pageList(@RequestBody PageParam pageParam) {
-        return super.pageList(pageParam);
+        return iSysDictService.pageList(pageParam, 0l);
+    }
+
+    @ApiOperation(value = "字典查询子集分页接口", notes = "字典查询子集分页接口", produces = "application/json")
+    @PostMapping("/subPage/{pid}")
+    public com.xiaobingby.common.core.api.R subPage(@RequestBody PageParam pageParam, @PathVariable(value = "pid") Long pid) {
+        return iSysDictService.pageList(pageParam, pid);
     }
 
     @ApiOperation(value = "添加字典接口", notes = "添加字典接口", produces = "application/json")
@@ -48,9 +54,9 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     }
 
     @ApiOperation(value = "删除字典接口", notes = "删除字典接口", produces = "application/json")
-    @DeleteMapping("{ids}")
-    public R delDict(@PathVariable Long[] ids) {
-        return R.ok(iSysDictService.removeByIds(Arrays.asList(ids)));
+    @DeleteMapping("{id}")
+    public R delDict(@PathVariable Long id) {
+        return R.ok(iSysDictService.removeById(id));
     }
 
 }
