@@ -3,14 +3,13 @@ package com.xiaobingby.upms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaobingby.common.core.api.R;
-import com.xiaobingby.common.core.page.PageParams;
+import com.xiaobingby.common.core.page.PageParam;
 import com.xiaobingby.upms.dto.RolePermissionDto;
 import com.xiaobingby.upms.entity.SysRole;
 import com.xiaobingby.upms.service.ISysPermissionService;
 import com.xiaobingby.upms.service.ISysRolePermissionService;
 import com.xiaobingby.upms.service.ISysRoleService;
 import com.xiaobingby.upms.vo.AntRolePermissionTreeVo;
-import com.xiaobingby.upms.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -44,8 +43,8 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
     @ApiOperation(value = "角色查询分页接口", notes = "角色查询分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public R pageList(@RequestBody PageParams pageParams) {
-        return super.pageList(pageParams);
+    public R<List<SysRole>> pageList(@RequestBody PageParam pageParam) {
+        return super.pageList(pageParam);
     }
 
     @ApiOperation(value = "添加角色接口", notes = "添加角色接口", produces = "application/json")

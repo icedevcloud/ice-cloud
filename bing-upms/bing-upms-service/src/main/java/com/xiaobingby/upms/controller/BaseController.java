@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xiaobingby.common.core.api.R;
-import com.xiaobingby.common.core.page.PageParams;
-import com.xiaobingby.common.core.page.Query;
+import com.xiaobingby.common.core.page.PageParam;
+import com.xiaobingby.common.core.page.QueryParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +23,12 @@ import java.util.ArrayList;
  */
 public class BaseController<BaseServiceImpl extends IService<T>, T, PK extends Serializable> {
 
-    @Autowired
+    @Autowired(required = false)
     private BaseServiceImpl baseService;
 
-    public R pageList(@RequestBody PageParams pageParams) {
-        ArrayList<Query> querys = pageParams.getQuerys();
-        Page<T> page = new Page<T>(pageParams.getCurrent(), pageParams.getPageSize());
+    public R pageList(@RequestBody PageParam pageParam) {
+        ArrayList<QueryParam> querys = pageParam.getQueryParams();
+        Page<T> page = new Page<T>(pageParam.getCurrent(), pageParam.getPageSize());
         QueryWrapper<T> tQueryWrapper = new QueryWrapper<>();
         if (querys != null) {
             querys.forEach(query -> {

@@ -1,8 +1,9 @@
 package com.xiaobingby.upms.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xiaobingby.common.core.api.R;
-import com.xiaobingby.common.core.page.PageParams;
+import com.xiaobingby.common.core.page.PageParam;
 import com.xiaobingby.common.security.dto.UserDetailsDto;
 import com.xiaobingby.common.security.util.SecurityUtils;
 import com.xiaobingby.upms.dto.SysUserDetailsDto;
@@ -33,8 +34,8 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
     @ApiOperation(value = "用户查询分页接口", notes = "用户查询分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public R pageList(@RequestBody PageParams pageParams) {
-        return super.pageList(pageParams);
+    public R<IPage<SysUser>> pageList(@RequestBody PageParam pageParam) {
+        return super.pageList(pageParam);
     }
 
     @ApiOperation(value = "添加用户接口", notes = "添加用户接口", produces = "application/json")

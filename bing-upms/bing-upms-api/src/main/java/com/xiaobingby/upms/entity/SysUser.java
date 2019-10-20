@@ -1,5 +1,7 @@
 package com.xiaobingby.upms.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.xiaobingby.common.mybatis.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,10 +43,11 @@ public class SysUser extends BaseEntity {
     @ApiModelProperty(value = "手机号")
     private String phone;
 
-    @ApiModelProperty(value = "手机号是否验证 0、否 1、是")
-    private Integer phoneVerified;
-
     @ApiModelProperty(value = "邮箱")
     private String email;
+
+    @ApiModelProperty(value = "部门ID")
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long deptId;
 
 }

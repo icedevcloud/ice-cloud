@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-public class Query<T> {
+public class QueryParam<T> {
 
     /**
      * 字段名称

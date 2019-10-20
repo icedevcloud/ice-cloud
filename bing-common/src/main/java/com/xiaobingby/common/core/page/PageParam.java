@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @since 1.0
  */
 @Data
-public class PageParams {
+public class PageParam {
 
     /**
      * 每页显示条数，默认 10
@@ -25,6 +25,6 @@ public class PageParams {
     /**
      * 请求条件
      */
-    private ArrayList<Query> querys;
+    private ArrayList<QueryParam> queryParams;
 
 }
