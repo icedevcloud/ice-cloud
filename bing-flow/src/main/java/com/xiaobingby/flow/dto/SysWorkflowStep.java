@@ -33,11 +33,19 @@ public class SysWorkflowStep implements Serializable {
      * type==2  普通流转
      * 默认为2 普通流转
      */
-    private Integer examineType=1;
+    private Integer examineType;
     /**
      * 步骤审核类型
      * 1 按照用户审核；
      * 2 按照角色审核
      */
-    private Integer stepExamineType=2;
+    private Integer stepExamineType;
+    /**
+     * 下面三个属性，当examineType=1 表明该节点 属于会签时，才有值
+     */
+    private String loopCardinality;
+
+    private String completionCondition;
+
+    private Boolean sequential;
 }
