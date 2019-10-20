@@ -4,16 +4,17 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xiaobingby.upms.entity.SysDict">
-    <result column="id" property="id" />
-    <result column="create_time" property="createTime" />
-    <result column="update_time" property="updateTime" />
-        <result column="name" property="name" />
-        <result column="type" property="type" />
-        <result column="code" property="code" />
-        <result column="value" property="value" />
-        <result column="status" property="status" />
-        <result column="sort" property="sort" />
-        <result column="description" property="description" />
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="pid" property="pid"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="code" property="code"/>
+        <result column="value" property="value"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -21,7 +22,7 @@
         id,
         create_time,
         update_time,
-        name, type, code, value, status, sort, description
+        pid, name, type, code, value, status, sort, description
     </sql>
 
 </mapper>
