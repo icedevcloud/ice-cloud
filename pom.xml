@@ -21,6 +21,7 @@
         <module>bing-view</module>
         <module>bing-mybatis</module>
         <module>bing-flow</module>
+        <module>ice-report</module>
     </modules>
 
     <properties>
