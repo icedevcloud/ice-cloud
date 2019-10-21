@@ -4,7 +4,7 @@ spring:
     driver-class-name : com.mysql.jdbc.Driver
     url: jdbc:mysql://sh-cdb-4tu4mj0t.sql.tencentcdb.com:63257/flow
     username: root
-    password:
+    password: Xiehuan!3
     hikari:
       max-lifetime: 1200000
 flowable:
