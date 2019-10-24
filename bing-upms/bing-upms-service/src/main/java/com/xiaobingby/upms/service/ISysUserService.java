@@ -21,7 +21,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     boolean updateUser(UserDto userDto);
 
-    boolean removeUserByIds(Long id);
+    boolean removeUserById(Long id);
 
     UserDto findUserRolesInfo(Long id);
 

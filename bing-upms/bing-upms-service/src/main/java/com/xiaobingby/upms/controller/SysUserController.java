@@ -53,7 +53,7 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
     @ApiOperation(value = "删除用户接口", notes = "删除用户接口", produces = "application/json")
     @DeleteMapping("{id}")
     public R<Boolean> delUser(@PathVariable Long id) {
-        return R.ok(iSysUserService.removeUserByIds(id));
+        return R.ok(iSysUserService.removeUserById(id));
     }
 
     @ApiOperation(value = "用户名查询用户信息接口", notes = "auth 服务授权使用接口", produces = "application/json")

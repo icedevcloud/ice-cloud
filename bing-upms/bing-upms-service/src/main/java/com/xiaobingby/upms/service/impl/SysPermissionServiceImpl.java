@@ -109,7 +109,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .eq(SysPermission::getPid, id)
         );
         if (count >= 1) {
-            throw new ApiException("存在子菜单,不允许删除");
+            throw new ApiException("存在子节点,不允许删除");
         }
         boolean remove = this.removeById(id);
 

@@ -138,7 +138,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public boolean removeUserByIds(Long id) {
+    public boolean removeUserById(Long id) {
         boolean remove = this.removeById(id);
 
         boolean remove1 = iSysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
