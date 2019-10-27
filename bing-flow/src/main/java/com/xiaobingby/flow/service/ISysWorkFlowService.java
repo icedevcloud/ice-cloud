@@ -19,6 +19,6 @@ public interface ISysWorkFlowService extends IService<SysWorkFlow> {
      * 动态流程
      * @param sysWorkFlow
      */
-    public void dynamicFlow(SysWorkFlow sysWorkFlow, List<SysWorkflowStep> sysWorkflowSteps);
+    public void dynamicFlow(SysWorkFlow sysWorkFlow, List<SysWorkflowStep> sysWorkflowSteps) throws Exception;
 
 }

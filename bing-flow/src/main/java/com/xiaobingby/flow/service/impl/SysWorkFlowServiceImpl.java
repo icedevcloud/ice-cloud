@@ -1,6 +1,7 @@
 package com.xiaobingby.flow.service.impl;
 
 import com.xiaobingby.flow.enums.Contants;
+import com.xiaobingby.flow.exception.WrokFlowException;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BaseElement;
 import org.flowable.bpmn.model.CollectionHandler;
@@ -37,6 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,13 +86,13 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
      */
     @Transactional
     @Override
-    public void dynamicFlow(SysWorkFlow sysWorkFlow, List<SysWorkflowStep> sysWorkflowSteps) {
+    public void dynamicFlow(SysWorkFlow sysWorkFlow, List<SysWorkflowStep> sysWorkflowSteps) throws Exception {
         // 把数据存入表中
         String jsonString = JSON.toJSONString(sysWorkflowSteps);
         sysWorkFlow.setStep(jsonString);
         //sysWorkFlowMapper.insert(sysWorkFlow);
         //addFlowDeploymentByParallelGateway(sysWorkFlow, sysWorkflowSteps,"new");
-        addFlowDeploymentBymultiInstanceLoop(sysWorkFlow, sysWorkflowSteps, "addFlowDeploymentBymultiInstanceLoop");
+        addFlowDeploymentBymultiInstanceLoop(sysWorkFlow, sysWorkflowSteps, "addFlowDeploymentBymultiInstanceLoop123");
     }
 
     /**
@@ -99,7 +101,8 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
      * @param workflow
      * @param stepList
      */
-    private void addFlowDeploymentBymultiInstanceLoop(SysWorkFlow workflow, List<SysWorkflowStep> stepList, String id) {
+    @Transactional
+    public void addFlowDeploymentBymultiInstanceLoop(SysWorkFlow workflow, List<SysWorkflowStep> stepList, String id) throws Exception {
         log.info("准备建立动态模型");
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         // 1. 建立模型
@@ -111,18 +114,28 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
         process.setDocumentation(workflow.getContent());
         //添加流程
         //开始节点
-        process.addFlowElement(createStartEvent());
+        process.addFlowElement(createStartEvent(null,null));
         for (int i = 0; i < stepList.size(); i++) {
             SysWorkflowStep step = stepList.get(i);
             MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = null;
-            String user = step.getUserNo();
-            if (step.getExamineType() == 1) {
-                multiInstanceLoopCharacteristics = createMultiInstanceLoopCharacteristics(false, step.getLoopCardinality(), step.getCompletionCondition());
-                user = Contants.FLOWABLE_USERTASK_ASSIGNEE;
+            String user = Contants.FLOWABLE_USERTASK_ASSIGNEE;
+
+            if (i == 0) {
+                process.addFlowElement(createUserTask("task" + i, step.getName(), null,Contants.FLOWABLE_INITIATOR_USERTASK_APPLICANT, null));
+                //回退节点
+                //process.addFlowElement(createUserTask("repulse" + i, "回退节点" + i, "${startUserId}"));
+            } else {
+                if (step.getExamineType() == 1) {
+                    multiInstanceLoopCharacteristics = createMultiInstanceLoopCharacteristics(false, step.getLoopCardinality(), step.getCompletionCondition());
+                }
+                process.addFlowElement(createUserTask("task" + i, step.getName(), null,user, multiInstanceLoopCharacteristics));
+                //回退节点
+                if (step.getRejectType() == 2) {
+                    process.addFlowElement(createUserTask("repulse" + i, "回退节点" + i, "${startUserId}",null,null));
+                }
             }
-            process.addFlowElement(createAssigneeTask("task" + i, "审核节点" + i, user, multiInstanceLoopCharacteristics));
-            //回退节点
-            process.addFlowElement(createUserTask("repulse" + i, "回退节点" + i, "${startUserId}"));
+
+
         }
         //结束节点
         process.addFlowElement(createEndEvent());
@@ -133,26 +146,34 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
             //第一个节点
             if (y == 0) {
                 //开始节点和审核节点1
-                process.addFlowElement(createSequenceFlow("startEvent", "task" + y, "开始节点到审核节点" + y, ""));
+                process.addFlowElement(createSequenceFlow("startEvent", "task" + y, stepList.get(0).getName() + "到" + stepList.get(1).getName(), ""));
             } else {
                 //普通
-                process.addFlowElement(createSequenceFlow("task" + (y - 1), "task" + y, "审核节点" + (y - 1) + "到审核节点" + y, "${flag=='true'}"));
+                process.addFlowElement(createSequenceFlow("task" + (y - 1), "task" + y, stepList.get(y - 1).getName() + "到" + stepList.get(y).getName(), "${flag=='true'}"));
 
             }
             //是否最后一个节点
             if (y == (stepList.size() - 1)) {
                 //审核节点到结束节点
-                process.addFlowElement(createSequenceFlow("task" + y, "endEvent", "审核节点" + y + "到结束节点", "${flag=='true'}"));
+                process.addFlowElement(createSequenceFlow("task" + y, "endEvent", stepList.get(y).getName() + "到结束节点", "${flag=='true'}"));
             }
             //审核节点到回退节点
-            process.addFlowElement(createSequenceFlow("task" + y, "repulse" + y, "审核不通过-打回" + y, "${flag=='false'}"));
-            process.addFlowElement(createSequenceFlow("repulse" + y, "task" + y, "回退节点到审核节点" + y, ""));
+            if (y != 0) {
+
+                if (step.getRejectType() == 1) {
+                    process.addFlowElement(createSequenceFlow("task" + y, "endEvent", "审核不通过-结束", "${flag=='false'}"));
+                } else {
+                    process.addFlowElement(createSequenceFlow("task" + y, "repulse" + y, "审核不通过-打回" + y, "${flag=='false'}"));
+                    process.addFlowElement(createSequenceFlow("repulse" + y, "task" + y, "回退节点到审核节点" + y, ""));
+                }
+            }
+
         }
 
         // 2. 生成的图形信息
         new BpmnAutoLayout(model).execute();
 
-        ProcessValidatorFactory processValidatorFactory=new ProcessValidatorFactory();
+        ProcessValidatorFactory processValidatorFactory = new ProcessValidatorFactory();
         ProcessValidator defaultProcessValidator = processValidatorFactory.createDefaultProcessValidator();
         //验证失败信息的封装ValidationError
         List<ValidationError> validate = defaultProcessValidator.validate(model);
@@ -161,17 +182,15 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
             System.out.println(validationError.getProblem());
             System.out.println(validationError.isWarning());
         }
-        InputStream input=null;
-            BpmnXMLConverter bpmnXMLConverter=new BpmnXMLConverter();
+        InputStream input = null;
+        BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
 
-            byte[] convertToXML = bpmnXMLConverter.convertToXML(model);
+        byte[] convertToXML = bpmnXMLConverter.convertToXML(model);
 
-            String bytes=new String(convertToXML);
+        String bytes = new String(convertToXML);
 
-            System.out.println(bytes);
-            input = new ByteArrayInputStream(convertToXML);
-
-
+        System.out.println(bytes);
+        input = new ByteArrayInputStream(convertToXML);
 
 
         // 3. 部署流程
@@ -185,7 +204,7 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
         try {
             // 6. 将流程图保存到本地文件
             InputStream processDiagram = processEngine.getRepositoryService().getProcessDiagram(processInstance.getProcessDefinitionId());
-            //FileUtils.copyInputStreamToFile(processDiagram, new File("/deployments/" + process.getId() + ".png"));
+            FileUtils.copyInputStreamToFile(processDiagram, new File("/deployments/" + process.getId() + ".png"));
 
             // 7. 保存BPMN.xml到本地文件
             InputStream processBpmn = processEngine.getRepositoryService().getResourceAsStream(deployment.getId(), process.getId() + ".bpmn20.xml");
@@ -201,10 +220,10 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
     /**
      * 使用并行网关完成会签
      *
-     * @param workflow
-     * @param stepList
+     * @param
+     * @param
      */
-    private void addFlowDeploymentByParallelGateway(SysWorkFlow workflow, List<SysWorkflowStep> stepList, String id) {
+    /*private void addFlowDeploymentByParallelGateway(SysWorkFlow workflow, List<SysWorkflowStep> stepList, String id) {
         log.info("准备建立动态模型");
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         // 1. 建立模型
@@ -216,7 +235,7 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
         process.setDocumentation(workflow.getContent());
         //添加流程
         //开始节点
-        process.addFlowElement(createStartEvent());
+        process.addFlowElement(createStartEvent(null));
         for (int i = 0; i < stepList.size(); i++) {
             SysWorkflowStep step = stepList.get(i);
             //判断是否会签
@@ -325,7 +344,7 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     //任务节点-组
     private UserTask createGroupTask(String id, String name, String candidateGroup) {
@@ -339,30 +358,20 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
     }
 
     //任务节点-用户
-    private UserTask createUserTask(String id, String name, String userPkno) {
-        List<String> candidateUsers = new ArrayList<String>();
-        candidateUsers.add(userPkno);
+    private UserTask createUserTask(String id, String name, String candidateUsers,String assignee,MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) throws Exception {
         UserTask userTask = new UserTask();
         userTask.setName(name);
         userTask.setId(id);
-        userTask.setCandidateUsers(candidateUsers);
-        return userTask;
-    }
-
-    /**
-     * @param id
-     * @param name
-     * @param assignee                         ${xxxxxxx} 这里的格式应该是这样的
-     * @param multiInstanceLoopCharacteristics
-     * @return
-     */
-    //任务节点-锁定者
-    private UserTask createAssigneeTask(String id, String name, String assignee, MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics) {
-        UserTask userTask = new UserTask();
-        userTask.setName(name);
-        userTask.setId(id);
-        userTask.setAssignee(assignee);
+        if (!StrUtil.isEmpty(candidateUsers)){
+            userTask.setCandidateUsers(Arrays.asList(candidateUsers.split(",")));
+        }
+        if (!StrUtil.isEmpty(assignee)) {
+            userTask.setAssignee(assignee);
+        }
         if (multiInstanceLoopCharacteristics != null) {
+            if (!StrUtil.startWith(assignee,"${")||!StrUtil.endWith(assignee,"}")){
+                throw new WrokFlowException("当有multiInstanceLoopCharacteristics节点时，userTask节点的assignee请输入正确的格式");
+            }
             userTask.setLoopCharacteristics(multiInstanceLoopCharacteristics);
         }
         return userTask;
@@ -448,9 +457,17 @@ public class SysWorkFlowServiceImpl extends ServiceImpl<SysWorkFlowMapper, SysWo
     }
 
     //开始节点
-    private StartEvent createStartEvent() {
+    private StartEvent createStartEvent(List<FormProperty> formProperties,String formKey) {
         StartEvent startEvent = new StartEvent();
         startEvent.setId("startEvent");
+        startEvent.setName("Start");
+        startEvent.setInitiator(Contants.FLOWABLE_INITIATOR_PARAM_APPLICANT);
+        if (formProperties !=null && formProperties.size() > 0){
+            startEvent.setFormProperties(formProperties);
+        }
+        if (!StrUtil.isEmpty(formKey)) {
+            startEvent.setFormKey(formKey);
+        }
         return startEvent;
     }
 
