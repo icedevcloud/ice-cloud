@@ -116,20 +116,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         this.updateById(sysUser);
 
-        if (userDto.getRoleIds() != null && userDto.getRoleIds().size() >= 1) {
-            iSysUserRoleService.removeUserRoleByUserId(sysUser.getId());
+        iSysUserRoleService.removeUserRoleByUserId(sysUser.getId());
 
-            Collection<String> roleIds = userDto.getRoleIds();
-            if (roleIds != null) {
-                List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
-                    SysUserRole userRole = new SysUserRole();
-                    userRole.setUserId(userDto.getId());
-                    userRole.setRoleId(Long.valueOf(roleId));
-                    return userRole;
-                }).collect(Collectors.toList());
-                iSysUserRoleService.saveBatch(sysUserRoles);
-            }
+        Collection<String> roleIds = userDto.getRoleIds();
+        if (roleIds != null) {
+            List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(userDto.getId());
+                userRole.setRoleId(Long.valueOf(roleId));
+                return userRole;
+            }).collect(Collectors.toList());
+            iSysUserRoleService.saveBatch(sysUserRoles);
         }
+
         return Boolean.TRUE;
     }
 
