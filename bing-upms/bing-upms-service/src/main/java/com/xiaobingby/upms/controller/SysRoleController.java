@@ -88,7 +88,7 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
     @ApiOperation(value = "分配角色权限接口", notes = "分配角色权限接口", produces = "application/json")
     @PutMapping("/updateRolePermission")
     public R updateRolePermission(@RequestBody RolePermissionDto rolePermissionDto) {
-        boolean b = iSysRolePermissionService.updateRolePermission(rolePermissionDto);
+        boolean b = iSysRolePermissionService.updateRolePermissionByRoleId(rolePermissionDto);
         return R.ok(b);
     }
 
