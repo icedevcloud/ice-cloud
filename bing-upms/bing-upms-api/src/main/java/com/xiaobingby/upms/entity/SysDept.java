@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * sys_organization 组织机构表
+ * sys_dept 部门表
  * </p>
  *
  * @author XiaoBingBy

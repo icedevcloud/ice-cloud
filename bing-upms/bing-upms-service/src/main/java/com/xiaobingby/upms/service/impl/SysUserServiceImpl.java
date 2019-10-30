@@ -84,7 +84,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public boolean addUser(UserDto userDto) {
+    public Boolean addUser(UserDto userDto) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
 
@@ -110,7 +110,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Transactional
     @Override
-    public boolean updateUser(UserDto userDto) {
+    public Boolean updateUserAndUserRole(UserDto userDto) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
 
@@ -132,9 +132,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return Boolean.TRUE;
     }
 
+    @Override
+    public Boolean updateUse(SysUser sysUser) {
+        return this.updateById(sysUser);
+    }
+
     @Transactional
     @Override
-    public boolean removeUserById(Long id) {
+    public Boolean removeUserById(Long id) {
         this.removeById(id);
         iSysUserRoleService.removeUserRoleByUserId(id);
         return Boolean.TRUE;

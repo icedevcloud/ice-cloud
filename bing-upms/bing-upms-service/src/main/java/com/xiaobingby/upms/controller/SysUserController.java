@@ -44,10 +44,16 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
         return R.ok(iSysUserService.addUser(userDto));
     }
 
-    @ApiOperation(value = "修改用户接口", notes = "修改用户接口", produces = "application/json")
+    @ApiOperation(value = "修改用户角色关联信息", notes = "修改用户角色关联信息", produces = "application/json")
     @PutMapping
-    public R<Boolean> updateUser(@RequestBody UserDto userDto) {
-        return R.ok(iSysUserService.updateUser(userDto));
+    public R<Boolean> updateUserAndUserRole(@RequestBody UserDto userDto) {
+        return R.ok(iSysUserService.updateUserAndUserRole(userDto));
+    }
+
+    @ApiOperation(value = "修改用户信息", notes = "修改用户接口", produces = "application/json")
+    @PutMapping("updateUser")
+    public R<Boolean> updateUser(@RequestBody SysUser sysUser) {
+        return R.ok(iSysUserService.updateUse(sysUser));
     }
 
     @ApiOperation(value = "删除用户接口", notes = "删除用户接口", produces = "application/json")

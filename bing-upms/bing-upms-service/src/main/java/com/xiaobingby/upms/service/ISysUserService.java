@@ -29,15 +29,23 @@ public interface ISysUserService extends IService<SysUser> {
      * @param userDto
      * @return
      */
-    boolean addUser(UserDto userDto);
+    Boolean addUser(UserDto userDto);
 
     /**
-     * 更新用户
+     * 更新用户角色关联信息
      *
      * @param userDto
      * @return
      */
-    boolean updateUser(UserDto userDto);
+    Boolean updateUserAndUserRole(UserDto userDto);
+
+    /**
+     * 修改用户信息
+     *
+     * @param sysUser
+     * @return
+     */
+    Boolean updateUse(SysUser sysUser);
 
     /**
      * 用户Id 删除用户
@@ -45,7 +53,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param id
      * @return
      */
-    boolean removeUserById(Long id);
+    Boolean removeUserById(Long id);
 
     /**
      * 用户ID 查询用户
