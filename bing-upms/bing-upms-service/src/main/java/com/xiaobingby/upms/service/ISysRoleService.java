@@ -16,6 +16,12 @@ import java.util.List;
  */
 public interface ISysRoleService extends IService<SysRole> {
 
+    /**
+     * 角色Id 删除角色
+     *
+     * @param id
+     * @return
+     */
     boolean delRole(Long id);
 
     /**

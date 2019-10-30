@@ -11,7 +11,10 @@ import com.xiaobingby.upms.entity.SysRole;
 import com.xiaobingby.upms.entity.SysUser;
 import com.xiaobingby.upms.entity.SysUserRole;
 import com.xiaobingby.upms.mapper.SysUserMapper;
-import com.xiaobingby.upms.service.*;
+import com.xiaobingby.upms.service.ISysPermissionService;
+import com.xiaobingby.upms.service.ISysRoleService;
+import com.xiaobingby.upms.service.ISysUserRoleService;
+import com.xiaobingby.upms.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,9 +52,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Autowired
     private ISysPermissionService iSysPermissionService;
-
-    @Autowired
-    private ISysRolePermissionService iSysRolePermissionService;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -139,12 +138,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional
     @Override
     public boolean removeUserById(Long id) {
-        boolean remove = this.removeById(id);
-
-        boolean remove1 = iSysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
-                .eq(SysUserRole::getUserId, id)
-        );
-        return remove1;
+        this.removeById(id);
+        iSysUserRoleService.removeUserRoleByUserId(id);
+        return Boolean.TRUE;
     }
 
     @Override

@@ -16,4 +16,20 @@ public interface ISysRolePermissionService extends IService<SysRolePermission> {
 
     boolean updateRolePermission(RolePermissionDto rolePermissionDto);
 
+    /**
+     * 权限Id 删除角色权限关系
+     *
+     * @param permissionId
+     * @return
+     */
+    Boolean removeRolePermissionByPermissionId(Long permissionId);
+
+    /**
+     * 角色Id 删除角色权限关系
+     *
+     * @param roleId
+     * @return
+     */
+    Boolean removeRolePermissionByRoleId(Long roleId);
+
 }

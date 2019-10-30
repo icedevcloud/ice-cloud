@@ -42,4 +42,14 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
         }
         return true;
     }
+
+    @Override
+    public Boolean removeRolePermissionByPermissionId(Long permissionId) {
+        return this.remove(Wrappers.<SysRolePermission>lambdaUpdate().eq(SysRolePermission::getPermissionId, permissionId));
+    }
+
+    @Override
+    public Boolean removeRolePermissionByRoleId(Long roleId) {
+        return this.remove(Wrappers.<SysRolePermission>update().lambda().eq(SysRolePermission::getRoleId, roleId));
+    }
 }

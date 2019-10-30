@@ -37,16 +37,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Transactional
     @Override
     public boolean delRole(Long id) {
-        boolean remove = this.removeById(id);
-
-        boolean remove1 = iSysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
-                .eq(SysUserRole::getRoleId, id)
-        );
-
-        boolean remove2 = iSysRolePermissionService.remove(Wrappers.<SysRolePermission>update().lambda()
-                .eq(SysRolePermission::getRoleId, id)
-        );
-        return remove2;
+        this.removeById(id);
+        iSysUserRoleService.removeUserRoleByRoleId(id);
+        iSysRolePermissionService.removeRolePermissionByRoleId(id);
+        return Boolean.TRUE;
     }
 
     @Override

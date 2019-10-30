@@ -1,5 +1,6 @@
 package com.xiaobingby.upms.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.xiaobingby.upms.entity.SysUserRole;
 import com.xiaobingby.upms.mapper.SysUserRoleMapper;
 import com.xiaobingby.upms.service.ISysUserRoleService;
@@ -16,5 +17,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements ISysUserRoleService {
+
+    @Override
+    public Boolean removeUserRoleByUserId(Long userId) {
+        return this.remove(Wrappers.<SysUserRole>update().lambda().eq(SysUserRole::getUserId, userId));
+    }
+
+    @Override
+    public Boolean removeUserRoleByRoleId(Long roleId) {
+        return this.remove(Wrappers.<SysUserRole>update().lambda().eq(SysUserRole::getRoleId, roleId));
+    }
 
 }

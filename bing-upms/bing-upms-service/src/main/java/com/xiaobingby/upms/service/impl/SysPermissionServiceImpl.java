@@ -105,18 +105,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Transactional
     @Override
     public boolean delPermission(Long id) {
-        int count = this.count(Wrappers.<SysPermission>lambdaQuery()
-                .eq(SysPermission::getPid, id)
-        );
+        int count = this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, id));
         if (count >= 1) {
             throw new ApiException("存在子节点,不允许删除");
         }
-        boolean remove = this.removeById(id);
-
-        boolean remove1 = iSysRolePermissionService.remove(Wrappers.<SysRolePermission>lambdaUpdate()
-                .eq(SysRolePermission::getPermissionId, id)
-        );
-        return remove1;
+        this.removeById(id);
+        iSysRolePermissionService.removeRolePermissionByPermissionId(id);
+        return Boolean.TRUE;
     }
 
     @Override
