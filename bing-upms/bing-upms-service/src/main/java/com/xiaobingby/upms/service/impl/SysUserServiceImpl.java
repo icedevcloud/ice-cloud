@@ -113,26 +113,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public boolean updateUser(UserDto userDto) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
-        if (!StringUtils.isEmpty(sysUser.getPassword())) {
-            //sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
-        }
-        boolean save = this.updateById(sysUser);
 
-        boolean remove = iSysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
-                .eq(SysUserRole::getUserId, sysUser.getId())
-        );
+        this.updateById(sysUser);
 
-        Collection<String> roleIds = userDto.getRoleIds();
-        if (roleIds != null) {
-            List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
-                SysUserRole userRole = new SysUserRole();
-                userRole.setUserId(userDto.getId());
-                userRole.setRoleId(Long.valueOf(roleId));
-                return userRole;
-            }).collect(Collectors.toList());
-            boolean save2 = iSysUserRoleService.saveBatch(sysUserRoles);
+        if (userDto.getRoleIds() != null && userDto.getRoleIds().size() >= 1) {
+            iSysUserRoleService.removeUserRoleByUserId(sysUser.getId());
+
+            Collection<String> roleIds = userDto.getRoleIds();
+            if (roleIds != null) {
+                List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
+                    SysUserRole userRole = new SysUserRole();
+                    userRole.setUserId(userDto.getId());
+                    userRole.setRoleId(Long.valueOf(roleId));
+                    return userRole;
+                }).collect(Collectors.toList());
+                iSysUserRoleService.saveBatch(sysUserRoles);
+            }
         }
-        return save;
+        return Boolean.TRUE;
     }
 
     @Transactional
