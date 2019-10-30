@@ -14,7 +14,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysRolePermissionService extends IService<SysRolePermission> {
 
-    boolean updateRolePermission(RolePermissionDto rolePermissionDto);
+    /**
+     * 角色ID 更新角色权限
+     *
+     * @param rolePermissionDto
+     * @return
+     */
+    boolean updateRolePermissionByRoleId(RolePermissionDto rolePermissionDto);
 
     /**
      * 权限Id 删除角色权限关系

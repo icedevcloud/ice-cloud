@@ -25,7 +25,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 
     @Transactional
     @Override
-    public boolean updateRolePermission(RolePermissionDto rolePermissionDto) {
+    public boolean updateRolePermissionByRoleId(RolePermissionDto rolePermissionDto) {
         this.remove(Wrappers.<SysRolePermission>lambdaUpdate()
             .eq(SysRolePermission::getRoleId, rolePermissionDto.getRoleId())
         );
@@ -40,7 +40,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
         if (rolePermissions.size() >= 1) {
             this.saveBatch(rolePermissions);
         }
-        return true;
+        return Boolean.TRUE;
     }
 
     @Override

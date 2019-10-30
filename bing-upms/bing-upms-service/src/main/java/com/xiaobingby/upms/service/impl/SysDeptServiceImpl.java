@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * <p>
- * sys_organization 组织机构表 服务实现类
+ * sys_dept 部门表 服务实现类
  * </p>
  *
  * @author XiaoBingBy

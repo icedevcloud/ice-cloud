@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- * sys_organization 组织机构表 服务类
+ * sys_dept 部门表 服务类
  * </p>
  *
  * @author XiaoBingBy
@@ -16,12 +16,35 @@ import java.util.List;
  */
 public interface ISysDeptService extends IService<SysDept> {
 
+    /**
+     * 生成部门Tree
+     *
+     * @return
+     */
     List<DeptTreeVo> getDeptTree();
 
+    /**
+     * 添加部门
+     *
+     * @param sysDept
+     * @return
+     */
     Boolean addDept(SysDept sysDept);
 
+    /**
+     * 更新部门
+     *
+     * @param sysDept
+     * @return
+     */
     Boolean updateDept(SysDept sysDept);
 
+    /**
+     * 部门Id 删除部门
+     *
+     * @param id
+     * @return
+     */
     Boolean removeDeptById(Long id);
 
 }

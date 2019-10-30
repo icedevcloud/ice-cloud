@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * sys_dict 字典表 服务类
  * </p>
  *
  * @author XiaoBingBy
@@ -15,6 +15,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysDictService extends IService<SysDict> {
 
+    /**
+     * pid 字典分页
+     *
+     * @param pageParam
+     * @param pid
+     * @return
+     */
     R pageList(PageParam pageParam, Long pid);
 
 }
