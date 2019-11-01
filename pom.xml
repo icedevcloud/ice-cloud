@@ -4,22 +4,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xiaobingby</groupId>
-    <artifactId>bing-cloud</artifactId>
+    <artifactId>ice-cloud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>bing-cloud</name>
+    <name>ice-cloud</name>
     <description>Spring Cloud Lab</description>
 
     <modules>
-        <module>bing-common</module>
-        <module>bing-gateway</module>
-        <module>bing-auth</module>
-        <module>bing-upms</module>
-        <module>bing-resources</module>
-        <module>bing-test</module>
-        <module>bing-view</module>
-        <module>bing-mybatis</module>
+        <module>ice-common</module>
+        <module>ice-gateway</module>
+        <module>ice-auth</module>
+        <module>ice-upms</module>
+        <module>ice-resources</module>
+        <module>ice-test</module>
+        <module>ice-view</module>
+        <module>ice-mybatis</module>
     </modules>
 
     <properties>

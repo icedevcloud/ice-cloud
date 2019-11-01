@@ -1,0 +1,25 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: ice-resources
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+  boot:
+    admin:
+      client:
+        url: http://localhost:5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
