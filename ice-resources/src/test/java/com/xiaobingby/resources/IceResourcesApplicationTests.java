@@ -1,4 +1,4 @@
-package com.xiaobingby.auth;
+package com.xiaobingby.resources;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BingAuthApplicationTests {
+public class IceResourcesApplicationTests {
 
     @Test
     public void contextLoads() {

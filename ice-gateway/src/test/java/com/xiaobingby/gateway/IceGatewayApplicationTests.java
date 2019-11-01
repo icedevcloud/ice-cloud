@@ -1,4 +1,4 @@
-package com.xiaobingby.resources;
+package com.xiaobingby.gateway;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BingResourcesApplicationTests {
+public class IceGatewayApplicationTests {
 
     @Test
     public void contextLoads() {

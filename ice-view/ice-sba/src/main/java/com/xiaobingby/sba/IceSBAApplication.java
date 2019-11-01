@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @EnableAdminServer
 @SpringBootApplication
-public class BingSBAApplication {
+public class IceSBAApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BingSBAApplication.class, args);
+        SpringApplication.run(IceSBAApplication.class, args);
     }
 
 }

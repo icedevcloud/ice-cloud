@@ -1,4 +1,4 @@
-package com.xiaobingby.test;
+package com.xiaobingby.upms;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BingTestApplicationTests {
+public class IceUpmsServiceApplicationTests {
 
     @Test
     public void contextLoads() {

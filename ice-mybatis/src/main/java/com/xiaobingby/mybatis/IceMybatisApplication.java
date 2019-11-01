@@ -1,13 +1,13 @@
-package com.xiaobingby.test;
+package com.xiaobingby.mybatis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BingTestApplication {
+public class IceMybatisApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BingTestApplication.class, args);
+        SpringApplication.run(IceMybatisApplication.class, args);
     }
 
 }
