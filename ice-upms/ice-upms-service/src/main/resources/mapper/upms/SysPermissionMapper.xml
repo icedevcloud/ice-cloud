@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xiaobingby.upms.mapper.SysPermissionMapper">
+<mapper namespace="com.icedevcloud.upms.mapper.SysPermissionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xiaobingby.upms.entity.SysPermission">
+    <resultMap id="BaseResultMap" type="com.icedevcloud.upms.entity.SysPermission">
         <result column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -44,7 +44,7 @@
           ORDER BY sort
     </select>
 
-    <select id="listPermissionByRoleId" resultType="com.xiaobingby.upms.entity.SysPermission">
+    <select id="listPermissionByRoleId" resultType="com.icedevcloud.upms.entity.SysPermission">
         SELECT
             *
         FROM

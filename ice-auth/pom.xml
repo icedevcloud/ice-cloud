@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.xiaobingby</groupId>
+        <groupId>com.icedevcloud</groupId>
         <artifactId>ice-cloud</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.xiaobingby</groupId>
+    <groupId>com.icedevcloud</groupId>
     <artifactId>ice-auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -55,13 +55,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.xiaobingby</groupId>
+            <groupId>com.icedevcloud</groupId>
             <artifactId>ice-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.xiaobingby</groupId>
+            <groupId>com.icedevcloud</groupId>
             <artifactId>ice-upms-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

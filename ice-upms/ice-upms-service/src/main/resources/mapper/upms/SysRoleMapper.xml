@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xiaobingby.upms.mapper.SysRoleMapper">
+<mapper namespace="com.icedevcloud.upms.mapper.SysRoleMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xiaobingby.upms.entity.SysRole">
+    <resultMap id="BaseResultMap" type="com.icedevcloud.upms.entity.SysRole">
         <result column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -23,13 +23,13 @@
         name, sort, role_code, status, default_role, description
     </sql>
 
-    <select id="listRolesByUserId" resultType="com.xiaobingby.upms.entity.SysRole">
+    <select id="listRolesByUserId" resultType="com.icedevcloud.upms.entity.SysRole">
         SELECT * from sys_role WHERE id in (
             SELECT role_id FROM `sys_user_role` WHERE user_id =#{userId}
         ) and status = 1
     </select>
 
-    <select id="roleIdByUsers" resultType="com.xiaobingby.upms.entity.SysUser">
+    <select id="roleIdByUsers" resultType="com.icedevcloud.upms.entity.SysUser">
         SELECT
             *
         FROM
