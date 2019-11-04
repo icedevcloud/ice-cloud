@@ -1,6 +1,7 @@
 package com.icedevcloud.upms.api.feign;
 
 import com.icedevcloud.common.core.api.R;
+import com.icedevcloud.common.core.constant.ServiceNameConstants;
 import com.icedevcloud.upms.dto.SysUserDetailsDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @date 2018-12-23 11:53
  * @since 1.0
  */
-@FeignClient(value = "ice-upms")
+@FeignClient(value = ServiceNameConstants.UPMS)
 public interface IUserFeign {
 
     /**
