@@ -1,5 +1,5 @@
 server:
-  port: 5000
+  port: 5001
 
 spring:
   application:
@@ -13,6 +13,8 @@ spring:
       config:
         server-addr: localhost:8848
         file-extension: yaml
+        shared-dataids: application-${spring.profiles.active}.yaml
+        refreshable-dataids: application-${spring.profiles.active}.yaml
     sentinel:
       transport:
         port: 8719
@@ -31,3 +33,7 @@ management:
     web:
       exposure:
         include: '*'
+
+logging:
+  level:
+    com.icedevcloud: debug
