@@ -29,7 +29,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <spring-boot.version>2.0.9.RELEASE</spring-boot.version>
-        <spring-cloud.version>Finchley.SR3</spring-cloud.version>
+        <spring-cloud.version>Finchley.SR4</spring-cloud.version>
         <spring-cloud-alibaba.version>2.0.0.RELEASE</spring-cloud-alibaba.version>
         <platform-bom.version>Cairo-SR7</platform-bom.version>
 
