@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = ApiException.class)
+    @ExceptionHandler(value = Exception.class)
     public R apiExceptionHandler(Exception e) {
         if (e instanceof ApiException) {
             ApiException apiException = (ApiException) e;
