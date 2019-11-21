@@ -6,10 +6,10 @@ import com.icedevcloud.common.core.api.R;
 import com.icedevcloud.common.core.page.PageParam;
 import com.icedevcloud.upms.dto.RolePermissionDto;
 import com.icedevcloud.upms.entity.SysRole;
-import com.icedevcloud.upms.vo.AntRolePermissionTreeVo;
 import com.icedevcloud.upms.service.ISysPermissionService;
 import com.icedevcloud.upms.service.ISysRolePermissionService;
 import com.icedevcloud.upms.service.ISysRoleService;
+import com.icedevcloud.upms.vo.AntRolePermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -41,9 +41,9 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
     private ISysRolePermissionService iSysRolePermissionService;
 
     @ApiOperation(value = "角色查询分页接口", notes = "角色查询分页接口", produces = "application/json")
-    @PostMapping("/page")
+    @GetMapping("/page")
     @Override
-    public R<List<SysRole>> pageList(@RequestBody PageParam pageParam) {
+    public R<List<SysRole>> pageList(PageParam pageParam) {
         return super.pageList(pageParam);
     }
 
