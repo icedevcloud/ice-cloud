@@ -18,8 +18,18 @@ public class ApiException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public ApiException(IErrorCode errorCode, Exception e) {
+        super(errorCode.getMessage(), e);
+        this.errorCode = errorCode;
+    }
+
     public ApiException(String message) {
         super(message);
+        this.errorCode = new ErrorCode(500, message);
+    }
+
+    public ApiException(String message, Exception e) {
+        super(message, e);
         this.errorCode = new ErrorCode(500, message);
     }
 
@@ -29,7 +39,7 @@ public class ApiException extends RuntimeException {
     }
 
     public ApiException(Integer code, String message, Exception e) {
-        super(message);
+        super(message, e);
         this.errorCode = new ErrorCode(code, message);
     }
 
