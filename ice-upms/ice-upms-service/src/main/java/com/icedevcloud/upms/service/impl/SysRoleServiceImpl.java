@@ -30,7 +30,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private ISysRolePermissionService iSysRolePermissionService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean delRole(Long id) {
         this.removeById(id);

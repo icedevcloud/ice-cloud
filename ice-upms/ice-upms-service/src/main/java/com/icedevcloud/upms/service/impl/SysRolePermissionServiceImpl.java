@@ -1,11 +1,11 @@
 package com.icedevcloud.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.icedevcloud.upms.dto.RolePermissionDto;
 import com.icedevcloud.upms.entity.SysRolePermission;
 import com.icedevcloud.upms.mapper.SysRolePermissionMapper;
 import com.icedevcloud.upms.service.ISysRolePermissionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +22,11 @@ import java.util.ArrayList;
 @Service
 public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements ISysRolePermissionService {
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateRolePermissionByRoleId(RolePermissionDto rolePermissionDto) {
         this.remove(Wrappers.<SysRolePermission>lambdaUpdate()
-            .eq(SysRolePermission::getRoleId, rolePermissionDto.getRoleId())
+                .eq(SysRolePermission::getRoleId, rolePermissionDto.getRoleId())
         );
         // 构造插入数据
         ArrayList<SysRolePermission> rolePermissions = new ArrayList<>();

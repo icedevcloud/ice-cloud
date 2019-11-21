@@ -3,15 +3,14 @@ package com.icedevcloud.upms.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.icedevcloud.common.core.api.Assert;
-import com.icedevcloud.common.core.exception.ApiException;
 import com.icedevcloud.upms.entity.SysPermission;
 import com.icedevcloud.upms.entity.SysRolePermission;
 import com.icedevcloud.upms.mapper.SysPermissionMapper;
+import com.icedevcloud.upms.service.ISysPermissionService;
+import com.icedevcloud.upms.service.ISysRolePermissionService;
 import com.icedevcloud.upms.vo.AntRolePermissionTreeVo;
 import com.icedevcloud.upms.vo.AntRouterTreeVo;
 import com.icedevcloud.upms.vo.PermissionTreeVo;
-import com.icedevcloud.upms.service.ISysPermissionService;
-import com.icedevcloud.upms.service.ISysRolePermissionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,7 +102,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return permissionTreeVos;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean delPermission(Long id) {
         int count = this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, id));

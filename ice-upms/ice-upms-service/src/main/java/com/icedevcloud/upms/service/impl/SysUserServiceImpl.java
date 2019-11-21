@@ -81,7 +81,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return sysUserDetailsDto;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean addUser(UserDto userDto) {
         SysUser sysUser = new SysUser();
@@ -107,7 +107,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return save1;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateUserAndUserRole(UserDto userDto) {
         SysUser sysUser = new SysUser();
@@ -136,7 +136,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return this.updateById(sysUser);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean removeUserById(Long id) {
         this.removeById(id);
