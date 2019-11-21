@@ -32,9 +32,9 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
     private ISysUserService iSysUserService;
 
     @ApiOperation(value = "用户查询分页接口", notes = "用户查询分页接口", produces = "application/json")
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Override
-    public R<IPage<SysUser>> pageList(PageParam pageParam) {
+    public R<IPage<SysUser>> pageList(@RequestBody PageParam pageParam) {
         return super.pageList(pageParam);
     }
 

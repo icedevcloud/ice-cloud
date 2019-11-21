@@ -26,7 +26,7 @@ public class BaseController<BaseServiceImpl extends IService<T>, T, PK extends S
     @Autowired(required = false)
     private BaseServiceImpl baseService;
 
-    public R pageList(PageParam pageParam) {
+    public R pageList(@RequestBody PageParam pageParam) {
         ArrayList<QueryParam> querys = pageParam.getQueryParams();
         Page<T> page = new Page<T>(pageParam.getCurrent(), pageParam.getPageSize());
         QueryWrapper<T> tQueryWrapper = new QueryWrapper<>();

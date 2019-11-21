@@ -1,7 +1,6 @@
 package com.icedevcloud.upms.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.icedevcloud.common.core.api.R;
 import com.icedevcloud.common.core.page.PageParam;
 import com.icedevcloud.upms.entity.SysDict;
@@ -28,15 +27,15 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     private ISysDictService iSysDictService;
 
     @ApiOperation(value = "字典查询父级分页接口", notes = "字典查询父级分页接口", produces = "application/json")
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Override
-    public R<IPage<SysDict>> pageList(PageParam pageParam) {
+    public R pageList(@RequestBody PageParam pageParam) {
         return iSysDictService.pageList(pageParam, 0l);
     }
 
     @ApiOperation(value = "字典查询子集分页接口", notes = "字典查询子集分页接口", produces = "application/json")
     @PostMapping("/subPage/{pid}")
-    public R<IPage<SysDict>> subPage(@RequestBody PageParam pageParam, @PathVariable(value = "pid") Long pid) {
+    public R subPage(@RequestBody PageParam pageParam, @PathVariable(value = "pid") Long pid) {
         return iSysDictService.pageList(pageParam, pid);
     }
 
