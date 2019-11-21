@@ -32,6 +32,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     private static final Logger logger = LoggerFactory.getLogger(ValidateCodeFilter.class);
 
+    private static final String UNKNOWN = "unknown";
+
+    private static final String TOKEN_URL = "/oauth/token";
+
     /**
      * 验证码校验失败处理器
      */
@@ -45,7 +49,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (StringUtils.equals("/oauth/token", request.getRequestURI())) {
+        if (StringUtils.equals(TOKEN_URL, request.getRequestURI())) {
             try {
                 validate(new ServletWebRequest(request));
             } catch (ValidateCodeException e) {
@@ -87,22 +91,22 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         //X-Forwarded-For：Squid 服务代理
         String ipAddresses = request.getHeader("X-Forwarded-For");
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //Proxy-Client-IP：apache 服务代理
             ipAddresses = request.getHeader("Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //WL-Proxy-Client-IP：weblogic 服务代理
             ipAddresses = request.getHeader("WL-Proxy-Client-IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //HTTP_CLIENT_IP：有些代理服务器
             ipAddresses = request.getHeader("HTTP_CLIENT_IP");
         }
 
-        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ipAddresses == null || ipAddresses.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //X-Real-IP：nginx服务代理
             ipAddresses = request.getHeader("X-Real-IP");
         }
@@ -113,7 +117,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         //还是不能获取到，最后再通过request.getRemoteAddr();获取
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             ip = request.getRemoteAddr();
         }
         return ip;
