@@ -2,13 +2,13 @@ package com.icedevcloud.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.icedevcloud.common.core.exception.ApiException;
+import com.icedevcloud.common.core.api.Assert;
 import com.icedevcloud.upms.entity.SysDept;
 import com.icedevcloud.upms.entity.SysUser;
-import com.icedevcloud.upms.vo.DeptTreeVo;
 import com.icedevcloud.upms.mapper.SysDeptMapper;
 import com.icedevcloud.upms.service.ISysDeptService;
 import com.icedevcloud.upms.service.ISysUserService;
+import com.icedevcloud.upms.vo.DeptTreeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,15 +84,13 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         int count = this.count(Wrappers.<SysDept>lambdaQuery()
                 .eq(SysDept::getPid, id)
         );
-        if (count >= 1) {
-            throw new ApiException("存在子节点,不允许删除");
-        }
+        Assert.fail(count >= 1, "存在子节点,不允许删除!");
+
         int userDeptCount = iSysUserService.count(Wrappers.<SysUser>lambdaQuery()
                 .eq(SysUser::getDeptId, id)
         );
-        if (userDeptCount >= 1) {
-            throw new ApiException("部门下存在用户,不允许删除");
-        }
+        Assert.fail(userDeptCount >= 1, "部门下存在用户,不允许删除!");
+
         return this.removeById(id);
     }
 

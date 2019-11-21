@@ -2,6 +2,7 @@ package com.icedevcloud.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.icedevcloud.common.core.api.Assert;
 import com.icedevcloud.common.core.exception.ApiException;
 import com.icedevcloud.upms.entity.SysPermission;
 import com.icedevcloud.upms.entity.SysRolePermission;
@@ -106,9 +107,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public boolean delPermission(Long id) {
         int count = this.count(Wrappers.<SysPermission>lambdaQuery().eq(SysPermission::getPid, id));
-        if (count >= 1) {
-            throw new ApiException("存在子节点,不允许删除");
-        }
+        Assert.fail(count >= 1, "存在子节点,不允许删除!");
+
         this.removeById(id);
         iSysRolePermissionService.removeRolePermissionByPermissionId(id);
         return Boolean.TRUE;
