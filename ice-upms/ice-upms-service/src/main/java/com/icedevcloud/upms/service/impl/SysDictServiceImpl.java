@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements ISysDictService {
 
     @Override
-    public R pageList(PageParam pageParam, Long pid) {
+    public R<IPage<SysDict>> pageList(PageParam pageParam, Long pid) {
         ArrayList<QueryParam> querys = pageParam.getQueryParams();
         Page<SysDict> page = new Page<SysDict>(pageParam.getCurrent(), pageParam.getPageSize());
         QueryWrapper<SysDict> tQueryWrapper = new QueryWrapper<>();

@@ -1,5 +1,6 @@
 package com.icedevcloud.upms.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.icedevcloud.common.core.api.R;
 import com.icedevcloud.common.core.page.PageParam;
 import com.icedevcloud.upms.entity.SysDict;
@@ -22,6 +23,6 @@ public interface ISysDictService extends IService<SysDict> {
      * @param pid
      * @return
      */
-    R pageList(PageParam pageParam, Long pid);
+    R<IPage<SysDict>> pageList(PageParam pageParam, Long pid);
 
 }
