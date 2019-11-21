@@ -23,6 +23,10 @@ import java.util.ArrayList;
  */
 public class BaseController<BaseServiceImpl extends IService<T>, T, PK extends Serializable> {
 
+    private static final String EQ = "eq";
+
+    private static final String LIKE = "like";
+
     @Autowired(required = false)
     private BaseServiceImpl baseService;
 
@@ -32,10 +36,10 @@ public class BaseController<BaseServiceImpl extends IService<T>, T, PK extends S
         QueryWrapper<T> tQueryWrapper = new QueryWrapper<>();
         if (querys != null) {
             querys.forEach(query -> {
-                if ("eq".equals(query.getType()) && StringUtils.isNotEmpty(query.getValue())) {
+                if (EQ.equals(query.getType()) && StringUtils.isNotEmpty(query.getValue())) {
                     tQueryWrapper.eq(query.getColumn(), query.getValue());
                 }
-                if ("like".equals(query.getType()) && StringUtils.isNotEmpty(query.getValue())) {
+                if (LIKE.equals(query.getType()) && StringUtils.isNotEmpty(query.getValue())) {
                     tQueryWrapper.like(query.getColumn(), query.getValue());
                 }
             });
