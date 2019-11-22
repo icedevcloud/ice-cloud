@@ -150,7 +150,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         for (PermissionTreeVo permissionTreeVo : permissionTree) {
             Long id = permissionTreeVo.getId();
             ids.add(String.valueOf(id));
-            if (permissionTreeVo.getChildren() != null) genAllPermissionTreeIds(permissionTreeVo.getChildren(), ids);
+            if (permissionTreeVo.getChildren() != null) {
+                genAllPermissionTreeIds(permissionTreeVo.getChildren(), ids);
+            }
         }
     }
 
