@@ -16,6 +16,12 @@ import java.util.List;
  */
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
+    /**
+     * 查询用户角色
+     *
+     * @param id
+     * @return
+     */
     List<SysPermission> findUserMenus(Long id);
 
     /**

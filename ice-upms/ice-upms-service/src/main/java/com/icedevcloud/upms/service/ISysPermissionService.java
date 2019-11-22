@@ -60,6 +60,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
     /**
      * Ant 前端路由接口
      *
+     * @param userId
      * @return
      */
     List<AntRouterTreeVo> getRouterByUser(Long userId);
