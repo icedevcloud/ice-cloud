@@ -30,7 +30,7 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     @PostMapping("/page")
     @Override
     public R pageList(@RequestBody PageParam pageParam) {
-        return iSysDictService.pageList(pageParam, 0l);
+        return iSysDictService.pageList(pageParam, 0L);
     }
 
     @ApiOperation(value = "字典查询子集分页接口", notes = "字典查询子集分页接口", produces = "application/json")
