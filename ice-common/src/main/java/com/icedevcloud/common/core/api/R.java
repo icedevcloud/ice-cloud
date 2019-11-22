@@ -71,7 +71,7 @@ public class R<T> implements Serializable {
     }
 
     public boolean ok() {
-        return ErrorCodeEnum.SUCCESS.getCode() == code;
+        return ErrorCodeEnum.SUCCESS.getCode().equals(code);
     }
 
     /**
