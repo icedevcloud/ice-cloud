@@ -36,14 +36,14 @@ public class SysPermissionController extends BaseController<ISysPermissionServic
     @GetMapping("/getPermissionTableTree")
     public R<List<PermissionTreeVo>> getPermissionTableTree() {
         List<PermissionTreeVo> permissionTableTree = iSysPermissionService.getPermissionTableTree();
-        return new R<List<PermissionTreeVo>>().ok(permissionTableTree);
+        return R.ok(permissionTableTree);
     }
 
     @ApiOperation(value = "所有权限菜单接口", notes = "所有权限菜单接口", produces = "application/json")
     @GetMapping("/getPermissionMenuTree")
     public R<List<PermissionTreeVo>> getPermissionMenuTree() {
         ArrayList<PermissionTreeVo> permissionMenuTree = iSysPermissionService.getPermissionMenuTree();
-        return new R<List<PermissionTreeVo>>().ok(permissionMenuTree);
+        return R.ok(permissionMenuTree);
     }
 
     @ApiOperation(value = "添加权限接口", notes = "添加权限接口", produces = "application/json")
