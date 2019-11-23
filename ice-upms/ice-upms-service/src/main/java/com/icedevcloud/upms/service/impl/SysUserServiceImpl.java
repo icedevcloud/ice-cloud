@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
-    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Autowired
     private ISysRoleService iSysRoleService;
@@ -88,7 +88,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         BeanUtils.copyProperties(userDto, sysUser);
 
         String password = RandomUtil.randomString(8);
-        String encode = passwordEncoder.encode(password);
+        String encode = PASSWORD_ENCODER.encode(password);
         sendPasswordMail(userDto.getUsername(), password, userDto.getEmail());
         sysUser.setPassword(encode);
 
