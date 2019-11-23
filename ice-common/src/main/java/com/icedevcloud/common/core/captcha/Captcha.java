@@ -36,19 +36,19 @@ public abstract class Captcha extends Randoms {
         for (int i = 0; i < len; i++) {
             switch (charType) {
                 case 2:
-                    cs[i] = alpha(numMaxIndex);
+                    cs[i] = alpha(NUM_MAX_INDEX);
                     break;
                 case 3:
-                    cs[i] = alpha(charMinIndex, charMaxIndex);
+                    cs[i] = alpha(CHAR_MIN_INDEX, CHAR_MAX_INDEX);
                     break;
                 case 4:
-                    cs[i] = alpha(upperMinIndex, upperMaxIndex);
+                    cs[i] = alpha(UPPER_MIN_INDEX, UPPER_MAX_INDEX);
                     break;
                 case 5:
-                    cs[i] = alpha(lowerMinIndex, lowerMaxIndex);
+                    cs[i] = alpha(LOWER_MIN_INDEX, LOWER_MAX_INDEX);
                     break;
                 case 6:
-                    cs[i] = alpha(upperMaxIndex);
+                    cs[i] = alpha(UPPER_MAX_INDEX);
                     break;
                 default:
                     cs[i] = alpha();

@@ -15,13 +15,13 @@ public class Randoms {
     public static final char ALPHA[] = {'2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'G', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    protected static final int numMaxIndex = 8;  // 数字的最大索引，不包括最大值
-    protected static final int charMinIndex = numMaxIndex;  // 字符的最小索引，包括最小值
-    protected static final int charMaxIndex = ALPHA.length;  // 字符的最大索引，不包括最大值
-    protected static final int upperMinIndex = charMinIndex;  // 大写字符最小索引
-    protected static final int upperMaxIndex = upperMinIndex + 23;  // 大写字符最大索引
-    protected static final int lowerMinIndex = upperMaxIndex;  // 小写字母最小索引
-    protected static final int lowerMaxIndex = charMaxIndex;  // 小写字母最大索引
+    protected static final int NUM_MAX_INDEX = 8;  // 数字的最大索引，不包括最大值
+    protected static final int CHAR_MIN_INDEX = NUM_MAX_INDEX;  // 字符的最小索引，包括最小值
+    protected static final int CHAR_MAX_INDEX = ALPHA.length;  // 字符的最大索引，不包括最大值
+    protected static final int UPPER_MIN_INDEX = CHAR_MIN_INDEX;  // 大写字符最小索引
+    protected static final int UPPER_MAX_INDEX = UPPER_MIN_INDEX + 23;  // 大写字符最大索引
+    protected static final int LOWER_MIN_INDEX = UPPER_MAX_INDEX;  // 小写字母最小索引
+    protected static final int LOWER_MAX_INDEX = CHAR_MAX_INDEX;  // 小写字母最大索引
 
     /**
      * 产生两个数之间的随机数
