@@ -1,6 +1,7 @@
 package com.icedevcloud.upms.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.icedevcloud.common.core.api.R;
 import com.icedevcloud.common.core.page.PageParam;
 import com.icedevcloud.upms.entity.SysDict;
@@ -29,32 +30,32 @@ public class SysDictController extends BaseController<ISysDictService, SysDict, 
     @ApiOperation(value = "字典查询父级分页接口", notes = "字典查询父级分页接口", produces = "application/json")
     @PostMapping("/page")
     @Override
-    public R pageList(@RequestBody PageParam pageParam) {
+    public R<IPage<SysDict>> pageList(@RequestBody PageParam pageParam) {
         return iSysDictService.pageList(pageParam, 0L);
     }
 
     @ApiOperation(value = "字典查询子集分页接口", notes = "字典查询子集分页接口", produces = "application/json")
     @PostMapping("/subPage/{pid}")
-    public R subPage(@RequestBody PageParam pageParam, @PathVariable(value = "pid") Long pid) {
+    public R<IPage<SysDict>> subPage(@RequestBody PageParam pageParam, @PathVariable(value = "pid") Long pid) {
         return iSysDictService.pageList(pageParam, pid);
     }
 
     @ApiOperation(value = "添加字典接口", notes = "添加字典接口", produces = "application/json")
     @PostMapping
-    public R addDict(@RequestBody SysDict sysDict) {
+    public R<Boolean> addDict(@RequestBody SysDict sysDict) {
         return R.ok(iSysDictService.save(sysDict));
     }
 
     @ApiOperation(value = "修改字典接口", notes = "修改字典接口", produces = "application/json")
     @PutMapping
-    public R updateDict(@RequestBody SysDict sysDict) {
+    public R<Boolean> updateDict(@RequestBody SysDict sysDict) {
         return R.ok(iSysDictService.updateById(sysDict));
     }
 
     @ApiOperation(value = "删除字典接口", notes = "删除字典接口", produces = "application/json")
     @DeleteMapping("{id}")
-    public R delDict(@PathVariable Long id) {
-        return R.ok(iSysDictService.removeById(id));
+    public R<Boolean> delDict(@PathVariable Long id) {
+        return R.ok(iSysDictService.removeDictById(id));
     }
 
 }

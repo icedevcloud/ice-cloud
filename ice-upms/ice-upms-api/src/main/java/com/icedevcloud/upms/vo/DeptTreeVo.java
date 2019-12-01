@@ -13,8 +13,6 @@ public class DeptTreeVo extends SysDept implements Serializable {
 
     private String title;
 
-    private String key;
-
     private List<DeptTreeVo> children;
 
 }

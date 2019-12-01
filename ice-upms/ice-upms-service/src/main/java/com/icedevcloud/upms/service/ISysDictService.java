@@ -25,4 +25,11 @@ public interface ISysDictService extends IService<SysDict> {
      */
     R<IPage<SysDict>> pageList(PageParam pageParam, Long pid);
 
+    /**
+     * 通过ID删除字典
+     *
+     * @param id
+     * @return
+     */
+    Boolean removeDictById(Long id);
 }

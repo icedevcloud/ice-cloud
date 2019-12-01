@@ -45,7 +45,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 DeptTreeVo temp = new DeptTreeVo();
                 BeanUtils.copyProperties(item, temp);
                 temp.setTitle(temp.getName());
-                temp.setKey(temp.getId().toString());
                 deptTreeVos.add(temp);
                 genSubDeptTreeVo(depts, temp);
             }
@@ -60,7 +59,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 DeptTreeVo temp = new DeptTreeVo();
                 BeanUtils.copyProperties(item, temp);
                 temp.setTitle(temp.getName());
-                temp.setKey(temp.getId().toString());
                 genSubDeptTreeVo(depts, temp);
                 children.add(temp);
             }
