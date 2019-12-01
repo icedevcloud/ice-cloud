@@ -42,6 +42,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         ArrayList<PermissionTreeVo> permissionTreeVos = new ArrayList<>();
         List<SysPermission> permissions = this.list(Wrappers.<SysPermission>lambdaQuery()
                 .orderByAsc(SysPermission::getSort)
+                .orderByDesc(SysPermission::getId)
         );
         genPermissionTreeVo(permissionTreeVos, permissions);
         return permissionTreeVos;

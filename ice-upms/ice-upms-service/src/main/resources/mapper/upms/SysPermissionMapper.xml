@@ -41,7 +41,7 @@
             )
             AND type = 0
             AND status = 1
-          ORDER BY sort
+          ORDER BY sort asc, id desc
     </select>
 
     <select id="listPermissionByRoleId" resultType="com.icedevcloud.upms.entity.SysPermission">
