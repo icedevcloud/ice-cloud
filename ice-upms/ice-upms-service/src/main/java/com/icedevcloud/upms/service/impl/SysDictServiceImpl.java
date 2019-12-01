@@ -2,7 +2,9 @@ package com.icedevcloud.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.icedevcloud.common.core.api.Assert;
 import com.icedevcloud.common.core.api.R;
 import com.icedevcloud.common.core.page.PageParam;
 import com.icedevcloud.common.core.page.QueryParam;
@@ -45,6 +47,18 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         tQueryWrapper.orderByDesc("create_time");
         IPage<SysDict> retData = this.page(page, tQueryWrapper);
         return R.ok(retData);
+    }
+
+    @Override
+    public Boolean removeDictById(Long id) {
+        // 查询是否存在子节点 存在不允许删除
+        int count = this.count(Wrappers.<SysDict>lambdaQuery()
+                .eq(SysDict::getPid, id)
+        );
+
+        Assert.fail(count >= 1, "存在子节点,不允许删除!");
+
+        return this.removeById(id);
     }
 
 }
