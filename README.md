@@ -1,4 +1,3 @@
-https://img.shields.io/badge/IceDevCloud-0.0.1-brightgreen
 <p align="center">
     <img src="https://img.shields.io/badge/IceCloud-0.0.1-blue">
     <img src="https://img.shields.io/badge/Spring%20Cloud-Finchley.SR4-blue">
