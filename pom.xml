@@ -33,7 +33,7 @@
         <spring-cloud-alibaba.version>2.0.0.RELEASE</spring-cloud-alibaba.version>
         <platform-bom.version>Cairo-SR7</platform-bom.version>
 
-        <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
+        <spring-security-oauth2.version>2.3.6.RELEASE</spring-security-oauth2.version>
         <mybatis-plus.version>3.1.0</mybatis-plus.version>
         <hikari-cp.version>3.3.1</hikari-cp.version>
         <hutool-all.version>4.5.10</hutool-all.version>
