@@ -13,12 +13,8 @@
 
     <modules>
         <module>ice-common</module>
-        <module>ice-gateway</module>
-        <module>ice-auth</module>
-        <module>ice-upms</module>
-        <module>ice-resources</module>
-        <module>ice-view</module>
-        <module>ice-mybatis</module>
+        <module>ice-upms-model</module>
+        <module>ice-upms-service</module>
     </modules>
 
     <properties>

@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: ice-mybatis
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://gz-cdb-qlqtn6j8.sql.tencentcdb.com:63816/ice-auth?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: BingCloud666$
