@@ -3,6 +3,7 @@ package com.icedevcloud.auth.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icedevcloud.auth.service.UserDetailsServiceImpl;
 import com.icedevcloud.common.core.api.R;
+import com.icedevcloud.common.core.constant.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -88,7 +89,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenStore tokenStore() {
         RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-        tokenStore.setPrefix("bing_token:");
+        tokenStore.setPrefix(SecurityConstants.TOKEN_STORE_PREFIX);
         return tokenStore;
     }
 
@@ -101,7 +102,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenEnhancer tokenEnhancer() {
         return (accessToken, authentication) -> {
             final Map<String, Object> additionalInfo = new HashMap<>(1);
-            additionalInfo.put("license", "XiaoBingBy");
+            additionalInfo.put("license", SecurityConstants.LICENSE);
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };

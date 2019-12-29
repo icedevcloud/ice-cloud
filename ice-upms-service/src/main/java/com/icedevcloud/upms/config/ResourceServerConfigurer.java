@@ -1,5 +1,6 @@
 package com.icedevcloud.upms.config;
 
+import com.icedevcloud.common.core.constant.SecurityConstants;
 import com.icedevcloud.common.security.component.RAccessDeniedHandler;
 import com.icedevcloud.common.security.component.RAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -27,10 +29,14 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     private RAccessDeniedHandler rAccessDeniedHandler = new RAccessDeniedHandler();
 
+    @Autowired
+    private IgnorePropertiesConfig ignorePropertiesConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/actuator/**", "/user/loadUserByUsername/**", "/oauth/**").permitAll()
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
+        ignorePropertiesConfig.getUrls().forEach(url -> registry.antMatchers(url).permitAll());
+        registry
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -54,7 +60,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     @Bean
     public TokenStore redisTokenStore() {
         RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-        tokenStore.setPrefix("bing_token:"); // 自定义Redis前缀
+        tokenStore.setPrefix(SecurityConstants.TOKEN_STORE_PREFIX); // 自定义Redis前缀
         return tokenStore;
     }
 
