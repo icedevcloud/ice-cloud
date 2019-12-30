@@ -13,6 +13,7 @@ import com.icedevcloud.upms.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -58,6 +59,7 @@ public class SysUserController extends BaseController<ISysUserService, SysUser, 
         return R.ok(iSysUserService.updateUse(sysUser));
     }
 
+    @PreAuthorize("hasAuthority('user:delUser')")
     @ApiOperation(value = "删除用户接口", notes = "删除用户接口", produces = "application/json")
     @DeleteMapping("{id}")
     public R<Boolean> delUser(@PathVariable Long id) {
