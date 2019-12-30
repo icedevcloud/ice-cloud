@@ -50,8 +50,8 @@
         FROM
             sys_permission
         WHERE
-            id IN ( SELECT permission_id FROM sys_role_permission WHERE type = 2 and role_id = #{roleId} )
-            AND status = 1
+            id IN ( SELECT permission_id FROM sys_role_permission WHERE role_id = #{roleId} )
+            AND status = 1 AND type = 1
     </select>
 
 </mapper>
