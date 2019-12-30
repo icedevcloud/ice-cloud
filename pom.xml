@@ -16,7 +16,6 @@
         <module>ice-gateway</module>
         <module>ice-auth</module>
         <module>ice-upms</module>
-        <module>ice-resources</module>
         <module>ice-view</module>
         <module>ice-mybatis</module>
     </modules>
