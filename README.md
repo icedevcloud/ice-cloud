@@ -33,6 +33,21 @@
 - 内存数据库: Redis
 - 前端框架：Ant Design Pro Vue
 
+# **项目结构** #
+```
+├─doc                               DOC
+│  ├─nacos                          Nacos 导入配置文件
+│  └─sql                            SQL 脚本
+├─ice-auth                          授权服务
+├─ice-common                        公共工具类
+├─ice-gateway                       网关
+├─ice-upms                          UPMS 服务 POM
+│  ├─ice-upms-api                   upms-api Entity Dto Vo Bo feign
+│  └─ice-upms-service               upms-service 服务
+└─ice-view                          监控相关
+    └─ice-sba                       Spring Boot Admin
+```
+
 # **后续计划** #
 - [ ] 在线报表开发 支持数据库 MySQL PostgreSQL Oracle
 - [ ] 支付整合
