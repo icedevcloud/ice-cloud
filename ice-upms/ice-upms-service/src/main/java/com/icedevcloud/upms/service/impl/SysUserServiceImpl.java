@@ -98,7 +98,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (roleIds != null) {
             List<SysUserRole> sysUserRoles = roleIds.stream().map(roleId -> {
                 SysUserRole userRole = new SysUserRole();
-                userRole.setUserId(userDto.getId());
+                userRole.setUserId(sysUser.getId());
                 userRole.setRoleId(Long.valueOf(roleId));
                 return userRole;
             }).collect(Collectors.toList());
