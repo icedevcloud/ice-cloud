@@ -1,5 +1,10 @@
 package com.icedevcloud.common.core.api;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public enum ErrorCodeEnum implements IErrorCode {
 
     /**
@@ -18,24 +23,6 @@ public enum ErrorCodeEnum implements IErrorCode {
     ErrorCodeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    @Override
-    public Integer getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    @Override
-    public String toString() {
-        return "ErrorCodeEnum{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                '}';
     }
 
 }
