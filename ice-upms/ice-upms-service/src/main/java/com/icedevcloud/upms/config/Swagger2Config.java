@@ -19,28 +19,23 @@ public class Swagger2Config {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .produces(Sets.newHashSet("application/json"))
-                .consumes(Sets.newHashSet("application/json"))
-                .protocols(Sets.newHashSet("http", "https"))
                 .apiInfo(apiInfo())
-                .forCodeGeneration(true)
-                .useDefaultResponseMessages(false)
+                .groupName("ice-upms")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.icedevcloud.upms.controller")) // 指定controller存放的目录路径
-                // .paths(PathSelectors.ant("/api/v1/*"))
+                .apis(RequestHandlerSelectors.basePackage("com.icedevcloud.upms.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("ice-upms API服务") // 文档标题
-                .description("ice-upms PI接口文档简要描述") // 文档描述
-                // .termsOfServiceUrl("https://github.com/yidao620c")
-                .version("v1")
-                // .license("MIT 协议")
-                // .licenseUrl("http://www.opensource.org/licenses/MIT")
-                .contact(new Contact("XiaoBingBy", "https://github.com/XiaoBingBy", "XiaoBingBy@Gmail.com"))
+                .title("ice-upms 服务")
+                .description("ice-upms api接口文档简要描述")
+                .termsOfServiceUrl("http://localhost:5001/")
+                .version("0.0.1")
+                .license("Apache License 2.0")
+                .licenseUrl("https://gitee.com/icedevcloud/ice-cloud/raw/master/LICENSE")
+                .contact(new Contact("icedevcloud", "https://gitee.com/icedevcloud", "XiaoBingBy@Gmail.com"))
                 .build();
     }
 
