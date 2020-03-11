@@ -17,7 +17,6 @@
         <module>ice-auth</module>
         <module>ice-upms</module>
         <module>ice-view</module>
-        <module>ice-mybatis</module>
     </modules>
 
     <properties>
