@@ -36,7 +36,7 @@
             WHERE id in (
                 SELECT permission_id FROM sys_role_permission WHERE role_id in
                 (
-                    select role_id from sys_user_role WHERE user_id = #{userId}
+                    select role_id from sys_user_role ur INNER JOIN sys_role r on ur.role_id = r.id  WHERE ur.user_id = #{userId} and r.`status` = 1
                 )
             )
             AND type = 0
