@@ -1,6 +1,6 @@
 package com.icedevcloud.upms.config;
 
-import com.icedevcloud.common.core.api.SpringHelper;
+import com.icedevcloud.common.core.spring.SpringHelper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
