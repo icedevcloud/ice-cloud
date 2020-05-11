@@ -44,7 +44,7 @@ public class BaseController<BaseServiceImpl extends IService<T>, T, PK extends S
                 }
             });
         }
-        tQueryWrapper.orderByDesc("create_time");
+        tQueryWrapper.orderByDesc("gmt_create");
         IPage<T> retData = baseService.page(page, tQueryWrapper);
         return R.ok(retData);
     }

@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://img.shields.io/badge/IceCloud-0.0.1-blue">
-    <img src="https://img.shields.io/badge/Spring%20Cloud-Finchley.SR4-blue">
-    <img src="https://img.shields.io/badge/Spring%20Boot-2.0.9.RELEASE-blue">
+    <img src="https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR1-blue">
+    <img src="https://img.shields.io/badge/Spring%20Boot-2.2.6.RELEASE-blue">
     <img src="https://img.shields.io/badge/Ant%20Design%20Pro%20Vue-brightgreen">
     <img src="">
     <a target="_blank" href="https://gitee.com/icedevcloud/ice-cloud">

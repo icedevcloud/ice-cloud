@@ -44,7 +44,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             });
         }
         tQueryWrapper.eq("pid", pid);
-        tQueryWrapper.orderByDesc("create_time");
+        tQueryWrapper.orderByDesc("gmt_create");
         IPage<SysDict> retData = this.page(page, tQueryWrapper);
         return R.ok(retData);
     }
