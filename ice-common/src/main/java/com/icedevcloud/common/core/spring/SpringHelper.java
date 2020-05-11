@@ -1,4 +1,4 @@
-package com.icedevcloud.common.core.api;
+package com.icedevcloud.common.core.spring;
 
 import org.springframework.context.ApplicationContext;
 
