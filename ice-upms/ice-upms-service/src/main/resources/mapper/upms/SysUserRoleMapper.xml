@@ -5,8 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.icedevcloud.upms.entity.SysUserRole">
     <result column="id" property="id" />
-    <result column="create_time" property="createTime" />
-    <result column="update_time" property="updateTime" />
+    <result column="gmt_create" property="gmtCreate" />
+    <result column="gmt_modified" property="gmtModified" />
         <result column="user_id" property="userId" />
         <result column="role_id" property="roleId" />
     </resultMap>
@@ -14,8 +14,8 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id,
-        create_time,
-        update_time,
+        gmt_create,
+        gmt_modified,
         user_id, role_id
     </sql>
 

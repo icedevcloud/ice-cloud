@@ -73,7 +73,7 @@ public class SysRoleController extends BaseController<ISysRoleService, SysRole, 
         if (StringUtils.isNotEmpty(roleName)) {
             queryWrapper.like("name", roleName);
         }
-        queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByDesc("gmt_create");
         List<SysRole> list = iSysRoleService.list(queryWrapper);
         return R.ok(list);
     }

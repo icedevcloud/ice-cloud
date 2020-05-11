@@ -25,13 +25,13 @@ public class BaseEntity implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO 修改常量
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO 修改常量
-    private LocalDateTime createTime;
+    private LocalDateTime gmtCreate;
 
     /**
      * 更新时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO 修改常量
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO 修改常量
-    private LocalDateTime updateTime;
+    private LocalDateTime gmtModified;
 
 }
